@@ -1,0 +1,15 @@
+﻿using Volo.Abp.Application;
+using Volo.Abp.Modularity;
+using Volo.Abp.Authorization;
+
+namespace Hano.Core;
+
+[DependsOn(
+    typeof(CoreDomainSharedModule),
+    typeof(AbpDddApplicationContractsModule),
+    typeof(AbpAuthorizationModule)
+    )]
+public class CoreApplicationContractsModule : AbpModule
+{
+
+}

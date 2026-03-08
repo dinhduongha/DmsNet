@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Mapperly" Version="10.2.0-rc.1" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Components.Web.Theming" Version="10.2.0-rc.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hano.Core.Application.Contracts\Hano.Core.Application.Contracts.csproj" />
+  </ItemGroup>
+</Project>

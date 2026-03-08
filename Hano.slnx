@@ -1,0 +1,44 @@
+<Solution>
+<Folder Name="/core/">
+        <Project Path="core/src/Hano.Core.Domain.Shared/Hano.Core.Domain.Shared.csproj" />
+        <Project Path="core/src/Hano.Core.Domain/Hano.Core.Domain.csproj" />
+        <Project Path="core/src/Hano.Core.Application.Contracts/Hano.Core.Application.Contracts.csproj" />
+        <Project Path="core/src/Hano.Core.Application/Hano.Core.Application.csproj" />
+        <Project Path="core/src/Hano.Core.EntityFrameworkCore/Hano.Core.EntityFrameworkCore.csproj" />
+        <Project Path="core/src/Hano.Core.HttpApi/Hano.Core.HttpApi.csproj" />
+        <Project Path="core/src/Hano.Core.HttpApi.Client/Hano.Core.HttpApi.Client.csproj" />
+        <Project Path="core/src/Hano.Core.Blazor/Hano.Core.Blazor.csproj" />
+        <Project Path="core/src/Hano.Core.Blazor.WebAssembly/Hano.Core.Blazor.WebAssembly.csproj" />
+        <Project Path="core/src/Hano.Core.Blazor.WebAssembly.Bundling/Hano.Core.Blazor.WebAssembly.Bundling.csproj" />
+        <Project Path="core/src/Hano.Core.Installer/Hano.Core.Installer.csproj" />
+        <Project Path="core/src/Hano.Core.BackgroundJobs/Hano.Core.BackgroundJobs.csproj" />
+        
+  </Folder>
+
+  <Folder Name="/shared/">
+        <Project Path="shared/Bamboo.Shared.Common/Bamboo.Shared.Common.csproj" />
+  </Folder>
+
+
+  <Folder Name="/src/">
+    <Project Path="src/Hano.Application.Contracts/Hano.Application.Contracts.csproj" />
+    <Project Path="src/Hano.Application/Hano.Application.csproj" />
+    <Project Path="src/Hano.AuthServer/Hano.AuthServer.csproj" />
+    <Project Path="src/Hano.Blazor.Client/Hano.Blazor.Client.csproj" />
+    <Project Path="src/Hano.Blazor/Hano.Blazor.csproj" />
+    <Project Path="src/Hano.DbMigrator/Hano.DbMigrator.csproj" />
+    <Project Path="src/Hano.Domain.Shared/Hano.Domain.Shared.csproj" />
+    <Project Path="src/Hano.Domain/Hano.Domain.csproj" />
+    <Project Path="src/Hano.EntityFrameworkCore/Hano.EntityFrameworkCore.csproj" />
+    <Project Path="src/Hano.HttpApi.Client/Hano.HttpApi.Client.csproj" />
+    <Project Path="src/Hano.HttpApi.Host/Hano.HttpApi.Host.csproj" />
+    <Project Path="src/Hano.HttpApi/Hano.HttpApi.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/Hano.Application.Tests/Hano.Application.Tests.csproj" />
+    <Project Path="test/Hano.Domain.Tests/Hano.Domain.Tests.csproj" />
+    <Project Path="test/Hano.EntityFrameworkCore.Tests/Hano.EntityFrameworkCore.Tests.csproj" />
+    <Project Path="test/Hano.HttpApi.Client.ConsoleTestApp/Hano.HttpApi.Client.ConsoleTestApp.csproj" />
+    <Project Path="test/Hano.TestBase/Hano.TestBase.csproj" />
+  </Folder>
+</Solution>

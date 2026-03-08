@@ -1,0 +1,66 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "Hano.Core.Domain": {
+      "path": "src/Hano.Core.Domain/Hano.Core.Domain.abppkg",
+      "folder": "src"
+    },
+    "Hano.Core.Application.Contracts": {
+      "path": "src/Hano.Core.Application.Contracts/Hano.Core.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Hano.Core.Application": {
+      "path": "src/Hano.Core.Application/Hano.Core.Application.abppkg",
+      "folder": "src"
+    },
+    "Hano.Core.EntityFrameworkCore": {
+      "path": "src/Hano.Core.EntityFrameworkCore/Hano.Core.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "Hano.Core.HttpApi": {
+      "path": "src/Hano.Core.HttpApi/Hano.Core.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Hano.Core.HttpApi.Client": {
+      "path": "src/Hano.Core.HttpApi.Client/Hano.Core.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Hano.Core.Blazor": {
+      "path": "src/Hano.Core.Blazor/Hano.Core.Blazor.abppkg",
+      "folder": "src"
+    },
+    "Hano.Core.Blazor.WebAssembly": {
+      "path": "src/Hano.Core.Blazor.WebAssembly/Hano.Core.Blazor.WebAssembly.abppkg",
+      "folder": "src"
+    },
+    "Hano.Core.TestBase": {
+      "path": "test/Hano.Core.TestBase/Hano.Core.TestBase.abppkg",
+      "folder": "test"
+    },
+    "Hano.Core.EntityFrameworkCore.Tests": {
+      "path": "test/Hano.Core.EntityFrameworkCore.Tests/Hano.Core.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "Hano.Core.Domain.Tests": {
+      "path": "test/Hano.Core.Domain.Tests/Hano.Core.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "Hano.Core.Application.Tests": {
+      "path": "test/Hano.Core.Application.Tests/Hano.Core.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "Hano.Core.Domain.Shared": {
+      "path": "src/Hano.Core.Domain.Shared/Hano.Core.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Hano.Core.Installer": {
+       "path": "src/Hano.Core.Installer/Hano.Core.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

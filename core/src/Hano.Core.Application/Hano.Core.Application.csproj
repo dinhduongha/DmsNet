@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Hano.Core</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Mapperly" Version="10.2.0-rc.1" />
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="10.2.0-rc.1" />
+    <ProjectReference Include="..\Hano.Core.Application.Contracts\Hano.Core.Application.Contracts.csproj" />
+    <ProjectReference Include="..\Hano.Core.Domain\Hano.Core.Domain.csproj" />
+    <ProjectReference Include="..\Hano.Core.BackgroundJobs\Hano.Core.BackgroundJobs.csproj" />    
+  </ItemGroup>
+
+</Project>
