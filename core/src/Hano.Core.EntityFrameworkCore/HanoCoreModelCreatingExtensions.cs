@@ -543,23 +543,16 @@ public static partial class HanoCoreModelCreatingExtensions
     {
         // For Npgsql
         var entityTypes = builder.Model.GetEntityTypes()
-            // Lọc ra các entity class kế thừa IEntity và không phải abstract
-            .Where(t => typeof(IEntity).IsAssignableFrom(t.ClrType) && !t.ClrType.IsAbstract);
+            // Lọc ra các entity class kế thừa IEntity<Guid> và không phải abstract
+            .Where(t => typeof(IEntity<Guid>).IsAssignableFrom(t.ClrType) && !t.ClrType.IsAbstract);
 
         foreach (var entityType in entityTypes)
         {
-            // Lấy đối tượng PropertyInfo của thuộc tính "Id"
-            var idProperty = entityType.ClrType.GetProperty("Id");
-
-            // Chỉ cấu hình nếu thuộc tính "Id" tồn tại trên Entity và có kiểu Guid
-            if (idProperty != null && idProperty.PropertyType == typeof(Guid))
+            builder.Entity(entityType.ClrType, b =>
             {
-                builder.Entity(entityType.ClrType, b =>
-                {
-                    b.Property("Id") // Dùng tên chuỗi "Id" hoặc nameof(IEntity.Id)
-                        .HasDefaultValueSql("uuidv7()");
-                });
-            }
+                b.Property("Id")
+                    .HasDefaultValueSql("uuidv7()");
+            });
         }
         return builder;
     }
