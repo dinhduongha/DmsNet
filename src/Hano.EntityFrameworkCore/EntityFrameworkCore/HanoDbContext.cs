@@ -69,6 +69,7 @@ public partial class HanoDbContext :
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        builder.UseUuidV7();
 
         /* Include modules to your migration db context */
         builder.ConfigureHano();
@@ -82,8 +83,7 @@ public partial class HanoDbContext :
         builder.ConfigureOpenIddict();
         builder.ConfigureFeatureManagement();
         builder.ConfigureTenantManagement();
-
-        builder.UseUuidV7();
+        //builder.UseUuidV7();
 
         /* Configure your own tables/entities inside here */
 

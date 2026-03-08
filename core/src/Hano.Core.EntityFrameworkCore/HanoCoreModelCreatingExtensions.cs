@@ -30,6 +30,7 @@ public static partial class HanoCoreModelCreatingExtensions
 {
     public static void ConfigureHanoCore(this ModelBuilder builder)
     {
+        builder.UseUuidV7();
         builder.ConfigureDevice();
         builder.ConfigureOsaReport();
         builder.ConfigureOsaReportItem();
@@ -56,6 +57,7 @@ public static partial class HanoCoreModelCreatingExtensions
         builder.ConfigureSyncQueue();
         builder.ConfigureVisit();
 
+        //builder.UseUuidV7();
         builder.SnakeCase();
 
         // builder.ApplyConfiguration(new DeviceConfiguration());

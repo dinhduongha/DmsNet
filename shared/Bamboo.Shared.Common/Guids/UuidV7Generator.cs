@@ -5,6 +5,8 @@ using Volo.Abp.DependencyInjection;
 using Volo.Abp.Guids;
 using Volo.Abp.Threading;
 
+namespace Bamboo.Shared.Common;
+
 /// <summary>
 /// Implements <see cref="IGuidGenerator"/> by creating sequential Guids.
 /// This code is taken from https://github.com/jhtodd/SequentialGuid/blob/master/SequentialGuid/Classes/SequentialGuid.cs

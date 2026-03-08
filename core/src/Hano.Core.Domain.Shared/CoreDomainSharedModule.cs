@@ -6,6 +6,9 @@ using Volo.Abp.Localization.ExceptionHandling;
 using Volo.Abp.Validation;
 using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Volo.Abp.Guids;
 using Bamboo.Shared.Common;
 
 namespace Hano.Core;
@@ -19,6 +22,8 @@ public class CoreDomainSharedModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        context.Services.Replace(ServiceDescriptor.Transient<IGuidGenerator, UuidV7Generator>());
+
         Configure<AbpVirtualFileSystemOptions>(options =>
         {
             options.FileSets.AddEmbedded<CoreDomainSharedModule>();

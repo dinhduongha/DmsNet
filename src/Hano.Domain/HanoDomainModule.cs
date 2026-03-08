@@ -14,6 +14,7 @@ using Volo.Abp.PermissionManagement.Identity;
 using Volo.Abp.PermissionManagement.OpenIddict;
 using Volo.Abp.SettingManagement;
 using Volo.Abp.TenantManagement;
+using Volo.Abp.Guids;
 
 namespace Hano;
 
@@ -34,6 +35,8 @@ public class HanoDomainModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        context.Services.Replace(ServiceDescriptor.Transient<IGuidGenerator, UuidV7GuidGenerator>());
+
         Configure<AbpLocalizationOptions>(options =>
         {
             options.Languages.Add(new LanguageInfo("ar", "ar", "العربية"));
