@@ -17,7 +17,7 @@ using Hano.Core.Domain.Reports;
 namespace Hano.Core.EntityFrameworkCore;
 
 // Copy these DbSet properties into your existing HanoCoreDbContext
-public partial class HanoCoreDbContext
+public partial class CoreDbContext
 {
     public DbSet<Device> Devices { get; set; } = null!;
     public DbSet<WorkSession> WorkSessions { get; set; } = null!;

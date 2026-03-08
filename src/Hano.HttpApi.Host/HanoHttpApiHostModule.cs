@@ -34,6 +34,7 @@ using Volo.Abp.VirtualFileSystem;
 using Hano.Core;
 using Hano.Core.EntityFrameworkCore;
 using Volo.Abp.MultiTenancy;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Hano;
 
@@ -112,12 +113,30 @@ public class HanoHttpApiHostModule : AbpModule
 
     private void ConfigureAuthentication(ServiceConfigurationContext context, IConfiguration configuration)
     {
+        var hostingEnvironment = context.Services.GetHostingEnvironment();
         context.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddAbpJwtBearer(options =>
             {
                 options.Authority = configuration["AuthServer:Authority"];
                 options.RequireHttpsMetadata = configuration.GetValue<bool>("AuthServer:RequireHttpsMetadata");
                 options.Audience = "Hano";
+
+                // Cho phép backchannel fetch JWKS bỏ qua SSL dev cert
+                if (hostingEnvironment.IsDevelopment())
+                {
+                    options.BackchannelHttpHandler = new System.Net.Http.HttpClientHandler
+                    {
+                        ServerCertificateCustomValidationCallback =
+                            System.Net.Http.HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                    };
+                }
+
+                // Accept cả hai dạng có/không trailing slash
+                var authority = configuration["AuthServer:Authority"]!.TrimEnd('/');
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuers = [authority, authority + "/"]
+                };
             });
 
         context.Services.Configure<AbpClaimsPrincipalFactoryOptions>(options =>

@@ -11,6 +11,7 @@ using Hano.Core.Domain.Shared;
 using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Repositories;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Hano.Core.Application.Visits;
 
@@ -18,9 +19,12 @@ public class VisitAppService : HanoCoreAppServiceBase, IVisitAppService
 {
     private readonly IRepository<Visit, Guid> _visitRepo;
     private readonly IRepository<Outlet, Guid> _outletRepo;
-
-    public VisitAppService(IRepository<Visit, Guid> visitRepo, IRepository<Outlet, Guid> outletRepo)
-    { _visitRepo = visitRepo; _outletRepo = outletRepo; }
+    private readonly IDistributedCache _distrubeCache;
+    public VisitAppService(IRepository<Visit, Guid> visitRepo, IRepository<Outlet, Guid> outletRepo, IDistributedCache distrubeCache)
+    {
+        _visitRepo = visitRepo; _outletRepo = outletRepo;
+        _distrubeCache = distrubeCache;
+    }
 
     public async Task<CheckinResultDto> CheckinAsync(CheckinDto input)
     {

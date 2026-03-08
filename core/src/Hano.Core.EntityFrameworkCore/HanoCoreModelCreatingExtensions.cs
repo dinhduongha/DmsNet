@@ -19,6 +19,7 @@ using Hano.Core.Domain.Routes;
 using Hano.Core.Domain.Sessions;
 using Hano.Core.Domain.Sync;
 using Hano.Core.Domain.Visits;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Hano.Core.EntityFrameworkCore;
 
@@ -54,6 +55,8 @@ public static partial class HanoCoreModelCreatingExtensions
         builder.ConfigureGpsBreadcrumb();
         builder.ConfigureSyncQueue();
         builder.ConfigureVisit();
+
+        builder.SnakeCase();
 
         // builder.ApplyConfiguration(new DeviceConfiguration());
         // builder.ApplyConfiguration(new WorkSessionConfiguration());
@@ -554,6 +557,64 @@ public static partial class HanoCoreModelCreatingExtensions
                     b.Property("Id") // Dùng tên chuỗi "Id" hoặc nameof(IEntity.Id)
                         .HasDefaultValueSql("uuidv7()");
                 });
+            }
+        }
+        return builder;
+    }
+    public static ModelBuilder SnakeCase(this ModelBuilder builder)
+    {
+        //var entityTypes = builder.Model.GetEntityTypes().ToList();
+        //foreach (var entityType in entityTypes)
+        //{
+        //    if (entityType.BaseType != null)
+        //    {
+        //        builder.Ignore(entityType.ClrType);
+        //    }
+        //}
+
+        foreach (var entity in builder.Model.GetEntityTypes())
+        {
+            if (entity.ClrType.Namespace?.StartsWith("Volo.Abp") == true)
+                continue;
+            var tblName = entity.GetTableName();
+            if (tblName == null || tblName.StartsWith("Abp"))
+                continue;
+            if (entity.BaseType == null && !entity.IsOwned())
+            {
+                entity.SetTableName(entity.GetTableName()?.ToSnakeCase());
+            }
+        }
+
+        foreach (var entity in builder.Model.GetEntityTypes())
+        {
+            if (entity.ClrType.Namespace?.StartsWith("Volo.Abp") == true)
+                continue;
+            if (entity.IsOwned())
+                continue;
+            var tblName = entity.GetTableName();
+            if (tblName == null || tblName.StartsWith("Abp"))
+                continue;
+            // Replace column names
+            foreach (var property in entity.GetProperties())
+            {
+                var columnName = property.GetColumnName(StoreObjectIdentifier.Table(property.DeclaringEntityType.GetTableName(), null));
+                property.SetColumnName(columnName.ToSnakeCase());
+            }
+            foreach (var key in entity.GetKeys())
+            {
+                key.SetName(key.GetName().ToSnakeCase());
+            }
+
+            foreach (var key in entity.GetForeignKeys())
+            {
+                key.SetConstraintName(key.GetConstraintName().ToSnakeCase());
+            }
+
+            foreach (var index in entity.GetIndexes())
+            {
+                //index.SetName(index.Name.ToSnakeCase());
+                index.SetDatabaseName(index.Name.ToSnakeCase());
+
             }
         }
         return builder;

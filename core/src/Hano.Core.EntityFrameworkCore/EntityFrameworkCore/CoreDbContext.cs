@@ -5,7 +5,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Hano.Core.EntityFrameworkCore;
 
 [ConnectionStringName(CoreDbProperties.ConnectionStringName)]
-public class CoreDbContext : AbpDbContext<CoreDbContext>, ICoreDbContext
+public partial class CoreDbContext : AbpDbContext<CoreDbContext>, ICoreDbContext
 {
     /* Add DbSet for each Aggregate Root here. Example:
      * public DbSet<Question> Questions { get; set; }
@@ -22,5 +22,6 @@ public class CoreDbContext : AbpDbContext<CoreDbContext>, ICoreDbContext
         base.OnModelCreating(builder);
 
         builder.ConfigureCore();
+        builder.ConfigureHanoCore();
     }
 }
