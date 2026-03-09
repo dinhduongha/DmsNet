@@ -13,9 +13,10 @@ The solution follows [ABP Modular Monolith architecture](https://abp.io/architec
 
 ## Tech Stack
 
-- **Framework:** ABP Framework Community (DDD, modular monolith)
-- **Language:** C# / .NET 10
-- **Database:** PostgreSQL (EF Core ORM), UUIDv7 primary keys
+- **Framework:** ABP Framework Community 10.2.x (DDD, modular monolith)
+- **Language:** C# / .NET 10, nullable reference types enabled
+- **Database:** PostgreSQL (EF Core ORM), UUIDv7 primary keys, snake_case column naming
+- **Mapping:** Riok.Mapperly (compile-time code generation, NOT AutoMapper)
 - **Auth:** OpenIddict (separate AuthServer process), OAuth 2.0 + PKCE
 - **Cache / Lock:** Redis (StackExchange.Redis, ABP Distributed Locking)
 - **Background Jobs:** Hangfire (PostgreSQL / Redis storage)
@@ -36,9 +37,9 @@ core/                                 # Hano.Core — business DDD module
       Notifications/ Orders/ Outlets/ Photos/ Reports/
       Routes/ Sessions/ Settings/ Sync/ Visits/
     Hano.Core.Application.Contracts/  # IAppService interfaces, input/output DTOs
-    Hano.Core.Application/            # AppService implementations, AutoMapper profiles
+    Hano.Core.Application/            # AppService implementations, Mapperly mappers
     Hano.Core.EntityFrameworkCore/    # CoreDbContext, migrations, repository impl
-    Hano.Core.HttpApi/                # Controllers (auto-generated from AppServices)
+    Hano.Core.HttpApi/                # Controllers (manual routing, inherit HanoCoreController)
     Hano.Core.HttpApi.Client/         # HTTP client proxy for the module
     Hano.Core.BackgroundJobs/         # Hangfire background jobs & workers
     Hano.Core.Blazor/                 # Blazor server-side UI components (module)
@@ -171,6 +172,12 @@ Backend syncs with ODS/TRAIDA (external system) via internal REST APIs:
 - All background jobs use Hangfire via ABP's `IBackgroundJobManager`.
 - Log with Serilog; include correlation IDs in all API requests.
 - **Module separation:** Business logic belongs in `Hano.Core.*`. Infrastructure/ABP wiring belongs in `Hano.*` (shell).
+- **Mapping:** Use Riok.Mapperly (`[Mapper]` static partial classes), NOT AutoMapper.
+- **DB naming:** snake_case for table and column names (`[Table("xxx")]`, `[Column("xxx")]`).
+- **Controllers:** Manual routing with `[Route("api/v1/...")]`, inherit `HanoCoreController`.
+- **AppServices:** Inherit `HanoCoreAppServiceBase`, implement `I{Name}AppService`.
+- **Idempotency:** Check existing records before insert in create operations.
+- **File-scoped namespaces:** Use `namespace Xxx;` (not block-scoped).
 
 ## Testing
 
@@ -183,7 +190,7 @@ Backend syncs with ODS/TRAIDA (external system) via internal REST APIs:
 ## Security Checklist
 
 - All endpoints require Bearer JWT (`[Authorize]`).
-- Role-based permissions via `[Authorize(HanoPermissions.XYZ)]`.
+- Role-based permissions via `[Authorize(CorePermissions.Xxx)]` (Core module) or `[Authorize(HanoPermissions.Xxx)]` (Shell).
 - Rate limiting: 100 req/min/user.
 - HTTPS only (TLS 1.2+).
 - Never log sensitive data (tokens, passwords).
