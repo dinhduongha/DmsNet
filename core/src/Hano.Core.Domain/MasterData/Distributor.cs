@@ -43,5 +43,5 @@ public class Distributor : AuditedEntity<Guid>
     public string? OdsDistributorId { get; set; }
 
     [Column("last_synced_at")]
-    public DateTime LastSyncedAt { get; set; }
+    public DateTimeOffset? LastSyncedAt { get; set; }
 }

@@ -6,8 +6,8 @@ namespace Hano.Core.Application.Contracts.Sessions.Dtos;
 public class SessionDto : EntityDto<Guid>
 {
     public SessionStatus Status { get; set; }
-    public DateTime StartedAt { get; set; }
-    public DateTime? EndedAt { get; set; }
+    public DateTimeOffset? StartedAt { get; set; }
+    public DateTimeOffset? EndedAt { get; set; }
     public SessionSummaryDto? Summary { get; set; }
 }
 public class SessionSummaryDto
@@ -23,5 +23,5 @@ public class BreadcrumbDto
     public decimal Lat { get; set; }
     public decimal Lng { get; set; }
     public float Accuracy { get; set; }
-    public DateTime Timestamp { get; set; }
+    public DateTimeOffset Timestamp { get; set; }
 }

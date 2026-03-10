@@ -61,7 +61,7 @@ public class Outlet : FullAuditedAggregateRoot<Guid>
     public Guid? ApprovedByUserId { get; set; }
 
     [Column("approved_at")]
-    public DateTime? ApprovedAt { get; set; }
+    public DateTimeOffset? ApprovedAt { get; set; }
 
     [Column("reject_reason")]
     public string? RejectReason { get; set; }

@@ -37,7 +37,7 @@ public class GpsBreadcrumb : Entity<Guid>
     public float Accuracy { get; set; }
 
     [Column("timestamp")]
-    public DateTime Timestamp { get; set; }
+    public DateTimeOffset? Timestamp { get; set; }
 
     [Column("battery_level")]
     public float? BatteryLevel { get; set; }

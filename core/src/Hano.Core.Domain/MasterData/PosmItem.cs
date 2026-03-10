@@ -37,5 +37,5 @@ public class PosmItem : AuditedEntity<Guid>
     public bool IsActive { get; set; } = true;
 
     [Column("last_synced_at")]
-    public DateTime LastSyncedAt { get; set; }
+    public DateTimeOffset? LastSyncedAt { get; set; }
 }

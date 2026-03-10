@@ -98,7 +98,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                 type: OpenIddictConstants.ClientTypes.Confidential,
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
                 displayName: "Web Application",
-                secret: configurationSection["Hano_Web:ClientSecret"] ?? "1q2w3e*",
+                secret: configurationSection["Hano_Web:ClientSecret"]!,
                 grantTypes: new List<string> //Hybrid flow
                 {
                     OpenIddictConstants.GrantTypes.AuthorizationCode,
@@ -126,7 +126,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                 type: OpenIddictConstants.ClientTypes.Confidential,
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
                 displayName: "Blazor Server Application",
-                secret: configurationSection["Hano_BlazorWebAppTiered:ClientSecret"] ?? "1q2w3e*",
+                secret: configurationSection["Hano_BlazorWebAppTiered:ClientSecret"]!,
                 grantTypes: new List<string> //Hybrid flow
                 {
                     OpenIddictConstants.GrantTypes.AuthorizationCode,
@@ -153,7 +153,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                 type: OpenIddictConstants.ClientTypes.Confidential,
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
                 displayName: "Blazor Server Application",
-                secret: configurationSection[$"{sectionName}_BlazorServerTiered:ClientSecret"] ?? "1q2w3E*",
+                secret: configurationSection[$"{sectionName}_BlazorServerTiered:ClientSecret"]!,
                 grantTypes: new List<string> //Hybrid flow
                 {
                     OpenIddictConstants.GrantTypes.AuthorizationCode,
@@ -190,7 +190,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                     OpenIddictConstants.GrantTypes.RefreshToken,
                     OpenIddictConstants.GrantTypes.Password
                 },
-                secret: configurationSection[$"{sectionName}_Mobile:ClientSecret"] ?? "1q2w3E*",
+                secret: configurationSection[$"{sectionName}_Mobile:ClientSecret"]!,
                 clientUri: MobileRootUrl,
                 redirectUri: $"{MobileRootUrl}authenticated",
                 postLogoutRedirectUri: $"{MobileRootUrl}signout-callback-oidc",
@@ -222,7 +222,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                     OpenIddictConstants.GrantTypes.ClientCredentials,
                     OpenIddictConstants.GrantTypes.RefreshToken
                 },
-                secret: configurationSection[$"{sectionName}_Internal:ClientSecret"] ?? "1q2w3E*",
+                secret: configurationSection[$"{sectionName}_Internal:ClientSecret"]!,
                 clientUri: internalRootUrl,
                 redirectUri: $"{internalRootUrl}authenticated",
                 redirectUris: redirectUris,
@@ -246,7 +246,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                 type: OpenIddictConstants.ClientTypes.Public,
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
                 displayName: "Flutter Application",
-                //secret: configurationSection[$"{sectionName}_FlutterApp:ClientSecret"] ?? "1q2w3E*",
+                //secret: configurationSection[$"{sectionName}_FlutterApp:ClientSecret"]!,
                 secret: null,
                 grantTypes: new List<string> {
                     OpenIddictConstants.GrantTypes.AuthorizationCode,

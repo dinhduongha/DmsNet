@@ -37,7 +37,7 @@ public class PosmReport : FullAuditedAggregateRoot<Guid>
     public SyncStatus SyncStatus { get; set; } = SyncStatus.Pending;
 
     [Column("client_created_at")]
-    public DateTime ClientCreatedAt { get; set; }
+    public DateTimeOffset? ClientCreatedAt { get; set; }
 
     public ICollection<PosmReportItem> Items { get; set; } = new List<PosmReportItem>();
 }

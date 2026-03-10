@@ -1,6 +1,9 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Threading.RateLimiting;
+
 using Localization.Resources.AbpUi;
 using Medallion.Threading;
 using Medallion.Threading.Redis;
@@ -9,10 +12,14 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Hano.EntityFrameworkCore;
-using Hano.Localization;
-using Hano.MultiTenancy;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.AspNetCore.Http;
+
 using StackExchange.Redis;
+using OpenIddict.Server.AspNetCore;
+
 using Volo.Abp;
 using Volo.Abp.Account;
 using Volo.Abp.Account.Web;
@@ -37,13 +44,13 @@ using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.UI;
 using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.Account.Localization;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.MultiTenancy;
-using OpenIddict.Server.AspNetCore;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.Extensions.Logging;
+
+using Hano.EntityFrameworkCore;
+using Hano.Localization;
+using Hano.MultiTenancy;
 
 namespace Hano;
 
@@ -75,16 +82,43 @@ public class HanoAuthServerModule : AbpModule
             });
         });
 
+        PreConfigure<OpenIddictServerBuilder>(builder =>
+        {
+            builder.SetAuthorizationCodeLifetime(TimeSpan.FromHours(1));
+            builder.SetAccessTokenLifetime(TimeSpan.FromDays(7));
+            builder.SetRefreshTokenLifetime(TimeSpan.FromDays(100));
+            var issuer = configuration["AuthServer:Authority"];
+            if (!string.IsNullOrWhiteSpace(issuer))
+            {
+                builder.SetIssuer(new Uri(issuer));
+            }
+        });
+
         if (!hostingEnvironment.IsDevelopment())
         {
+            var pfxPassword = configuration["AuthServer:PfxPassword"];
             PreConfigure<AbpOpenIddictAspNetCoreOptions>(options =>
             {
                 options.AddDevelopmentEncryptionAndSigningCertificate = false;
             });
 
-            PreConfigure<OpenIddictServerBuilder>(serverBuilder =>
+            if (!string.IsNullOrWhiteSpace(pfxPassword))
             {
-                serverBuilder.AddProductionEncryptionAndSigningCertificate("openiddict.pfx", "ddb0d8cb-330c-4dff-be6e-c3a0888c04bd");
+
+                PreConfigure<OpenIddictServerBuilder>(serverBuilder =>
+                {
+                    serverBuilder.AddProductionEncryptionAndSigningCertificate("openiddict.pfx", pfxPassword);
+                });
+            }
+        }
+
+        var disableHttps = configuration.GetValue("AuthServer:DisableTransportSecurityRequirement", false);
+
+        if (disableHttps)
+        {
+            PreConfigure<OpenIddictServerAspNetCoreBuilder>(builder =>
+            {
+                builder.DisableTransportSecurityRequirement();
             });
         }
     }
@@ -94,6 +128,23 @@ public class HanoAuthServerModule : AbpModule
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
 
+        Configure<OpenIddictServerBuilder>(builder =>
+        {
+            // Ép buộc Issuer từ appsettings.json
+            var issuer = configuration["AuthServer:Authority"];
+            if (!string.IsNullOrWhiteSpace(issuer))
+            {
+                builder.SetIssuer(new Uri(issuer));
+            }
+        });
+        var disableHttps = configuration.GetValue("AuthServer:DisableTransportSecurityRequirement", false);
+        if (disableHttps)
+        {
+            Configure<OpenIddictServerAspNetCoreOptions>(options =>
+            {
+                options.DisableTransportSecurityRequirement = disableHttps;
+            });
+        }
         var section = configuration.GetSection("Authentication:Google");
         if (section.Exists() && section.GetValue<bool>("Enable", false))
         {
@@ -118,15 +169,23 @@ public class HanoAuthServerModule : AbpModule
             context.Services.AddAuthentication()
                 .AddMicrosoftAccount(options =>
             {
-                options.ClientId = section["ClientId"] ?? "8208d98e-400d-4ce9-89ba-d92610c67e13";
-                options.ClientSecret = section["ClientSecret"] ?? "hsrMP46|_kfkcYCWSW516?%";
+                options.ClientId = section["ClientId"]!;
+                options.ClientSecret = section["ClientSecret"]!;
             });
         }
         ConfigureTenantResolver(context, configuration);
-        Configure<OpenIddictServerAspNetCoreOptions>(options =>
+        context.Services.AddRateLimiter(options =>
         {
-            options.DisableTransportSecurityRequirement = true;
+            options.AddFixedWindowLimiter("auth-limit", opt =>
+            {
+                opt.PermitLimit = 100;
+                opt.Window = TimeSpan.FromMinutes(1);
+                opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                opt.QueueLimit = 10;
+            });
+            options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
         });
+
 
         Configure<AbpLocalizationOptions>(options =>
         {
@@ -304,6 +363,7 @@ public class HanoAuthServerModule : AbpModule
 
         app.UseCorrelationId();
         app.MapAbpStaticAssets();
+        app.UseRateLimiter();
         app.UseRouting();
         app.UseCors();
         app.UseAuthentication();

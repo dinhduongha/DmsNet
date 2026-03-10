@@ -43,5 +43,5 @@ public class PriceList : AuditedEntity<Guid>
     public DateOnly? EffectiveTo { get; set; }
 
     [Column("last_synced_at")]
-    public DateTime LastSyncedAt { get; set; }
+    public DateTimeOffset? LastSyncedAt { get; set; }
 }

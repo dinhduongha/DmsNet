@@ -37,7 +37,7 @@ public class WorkSession : FullAuditedAggregateRoot<Guid>
     public SessionStatus Status { get; set; } = SessionStatus.Active;
 
     [Column("sod_timestamp")]
-    public DateTime SodTimestamp { get; set; }
+    public DateTimeOffset? SodTimestamp { get; set; }
 
     [Column("sod_latitude")]
     public decimal SodLatitude { get; set; }
@@ -49,7 +49,7 @@ public class WorkSession : FullAuditedAggregateRoot<Guid>
     public Guid? SodSelfiePhotoId { get; set; }
 
     [Column("eod_timestamp")]
-    public DateTime? EodTimestamp { get; set; }
+    public DateTimeOffset? EodTimestamp { get; set; }
 
     [Column("eod_latitude")]
     public decimal? EodLatitude { get; set; }

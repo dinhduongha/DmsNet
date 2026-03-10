@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Application.Dtos;
 
@@ -7,6 +8,7 @@ namespace Hano.Core.Application.Contracts.Routes.Dtos;
 
 public class CreateRouteDto
 {
+    [MaxLength(1024)]
     public string Name { get; set; } = null!;
     public int DayOfWeek { get; set; }
     public Guid NvbhId { get; set; }
@@ -15,6 +17,7 @@ public class CreateRouteDto
 
 public class UpdateRouteDto
 {
+    [MaxLength(1024)]
     public string Name { get; set; } = null!;
     public int DayOfWeek { get; set; }
     public Guid NvbhId { get; set; }
@@ -23,6 +26,7 @@ public class UpdateRouteDto
 
 public class RouteDto : EntityDto<Guid>
 {
+    [MaxLength(1024)]
     public string Name { get; set; } = null!;
     public int DayOfWeek { get; set; }
     public RouteStatus Status { get; set; }
@@ -33,6 +37,8 @@ public class RouteDto : EntityDto<Guid>
 public class RouteOutletDto
 {
     public Guid OutletId { get; set; }
+
+    [MaxLength(1024)]
     public string OutletName { get; set; } = null!;
     public int SequenceOrder { get; set; }
     public string? VisitStatus { get; set; }

@@ -209,12 +209,22 @@ public class HanoHttpApiHostModule : AbpModule
     {
         var app = context.GetApplicationBuilder();
         var env = context.GetEnvironment();
-
+        var configuration = context.GetConfiguration();
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
         }
 
+        var useHsts = configuration.GetValue("App:UseHsts", false);
+        if (useHsts)
+        {
+            if (!env.IsDevelopment())
+            {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+            app.UseHttpsRedirection();
+        }
         app.UseAbpRequestLocalization();
         app.UseCorrelationId();
         app.MapAbpStaticAssets();

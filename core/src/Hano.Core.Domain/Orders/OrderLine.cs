@@ -37,7 +37,7 @@ public class OrderLine : Entity<Guid>
     public string SkuName { get; set; } = null!;
 
     [Column("quantity")]
-    public int Quantity { get; set; }
+    public decimal Quantity { get; set; }
 
     [Column("unit")]
     public string Unit { get; set; } = null!;

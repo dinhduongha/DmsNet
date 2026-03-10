@@ -43,7 +43,7 @@ public class Notification : CreationAuditedEntity<Guid>
     public bool IsRead { get; set; }
 
     [Column("read_at")]
-    public DateTime? ReadAt { get; set; }
+    public DateTimeOffset? ReadAt { get; set; }
 
     [Column("deeplink")]
     public string? Deeplink { get; set; }
@@ -55,5 +55,5 @@ public class Notification : CreationAuditedEntity<Guid>
     public Guid? SenderUserId { get; set; }
 
     [Column("expiry_time")]
-    public DateTime? ExpiryTime { get; set; }
+    public DateTimeOffset? ExpiryTime { get; set; }
 }

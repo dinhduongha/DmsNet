@@ -79,7 +79,7 @@ public class Order : FullAuditedAggregateRoot<Guid>
     public SyncStatus SyncStatus { get; set; } = SyncStatus.Pending;
 
     [Column("client_created_at")]
-    public DateTime ClientCreatedAt { get; set; }
+    public DateTimeOffset? ClientCreatedAt { get; set; }
 
     public ICollection<OrderLine> Lines { get; set; } = new List<OrderLine>();
 }

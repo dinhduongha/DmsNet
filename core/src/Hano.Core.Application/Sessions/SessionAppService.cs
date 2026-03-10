@@ -41,8 +41,12 @@ public class SessionAppService : HanoCoreAppServiceBase, ISessionAppService
 
         var session = new WorkSession
         {
-            Id = GuidGenerator.Create(), UserId = CurrentUserId, Date = today,
-            SodTimestamp = DateTime.UtcNow, SodLatitude = input.Latitude, SodLongitude = input.Longitude,
+            Id = GuidGenerator.Create(),
+            UserId = CurrentUserId,
+            Date = today,
+            SodTimestamp = DateTime.UtcNow,
+            SodLatitude = input.Latitude,
+            SodLongitude = input.Longitude,
             SodSelfiePhotoId = input.SelfiePhotoId,
         };
         await _sessionRepo.InsertAsync(session);
@@ -82,6 +86,15 @@ public class SessionAppService : HanoCoreAppServiceBase, ISessionAppService
     public async Task<SessionSummaryDto> GetSummaryAsync(Guid sessionId)
     {
         var s = await _sessionRepo.GetAsync(sessionId);
-        return new SessionSummaryDto { TotalVisits = s.TotalVisits, TotalOrders = s.TotalOrders, TotalRevenue = s.TotalRevenue, TotalDistanceKm = s.TotalDistanceKm, WorkDurationMinutes = (int)(((s.EodTimestamp ?? DateTime.UtcNow) - s.SodTimestamp).TotalMinutes) };
+        return new SessionSummaryDto
+        {
+            TotalVisits = s.TotalVisits,
+            TotalOrders = s.TotalOrders,
+            TotalRevenue = s.TotalRevenue,
+            TotalDistanceKm = s.TotalDistanceKm,
+            WorkDurationMinutes = (int)((s.EodTimestamp ?? DateTimeOffset.UtcNow)
+                                        .Subtract(s.SodTimestamp ?? DateTimeOffset.UtcNow)
+                                        .TotalMinutes)
+        };
     }
 }

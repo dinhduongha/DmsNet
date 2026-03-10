@@ -49,5 +49,5 @@ public class Sku : FullAuditedEntity<Guid>
     public string? OdsSkuId { get; set; }
 
     [Column("last_synced_at")]
-    public DateTime LastSyncedAt { get; set; }
+    public DateTimeOffset? LastSyncedAt { get; set; }
 }

@@ -38,7 +38,7 @@ public class OosReport : FullAuditedAggregateRoot<Guid>, IMultiTenant
     public SyncStatus SyncStatus { get; set; } = SyncStatus.Pending;
 
     [Column("client_created_at")]
-    public DateTime ClientCreatedAt { get; set; }
+    public DateTimeOffset? ClientCreatedAt { get; set; }
 
     public ICollection<OosReportItem> Items { get; set; } = new List<OosReportItem>();
 

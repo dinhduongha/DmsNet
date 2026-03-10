@@ -43,7 +43,7 @@ public class Photo : CreationAuditedEntity<Guid>
     public decimal? Longitude { get; set; }
 
     [Column("captured_at")]
-    public DateTime? CapturedAt { get; set; }
+    public DateTimeOffset? CapturedAt { get; set; }
 
     [Column("visit_id")]
     public Guid? VisitId { get; set; }

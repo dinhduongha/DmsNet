@@ -1,10 +1,12 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hano.Core.HttpApi.Controllers;
 
 [Route("api/v1/app-version")]
 [ApiController]
+[AllowAnonymous]
 public class DmsAppVersionController : HanoCoreController
 {
     [HttpGet("check")]

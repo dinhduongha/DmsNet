@@ -37,17 +37,17 @@ public class VehicleStock : AuditedEntity<Guid>
     public DateOnly Date { get; set; }
 
     [Column("opening_qty")]
-    public int OpeningQty { get; set; }
+    public decimal OpeningQty { get; set; }
 
     [Column("sold_qty")]
-    public int SoldQty { get; set; }
+    public decimal SoldQty { get; set; }
 
     [Column("return_qty")]
-    public int ReturnQty { get; set; }
+    public decimal ReturnQty { get; set; }
 
     [Column("damaged_qty")]
-    public int DamagedQty { get; set; }
+    public decimal DamagedQty { get; set; }
 
     [Column("current_qty")]
-    public int CurrentQty { get; set; }
+    public decimal CurrentQty { get; set; }
 }

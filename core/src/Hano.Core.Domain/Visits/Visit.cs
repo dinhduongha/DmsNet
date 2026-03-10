@@ -40,7 +40,7 @@ public class Visit : FullAuditedAggregateRoot<Guid>
     public VisitStatus Status { get; set; } = VisitStatus.Planned;
 
     [Column("checkin_at")]
-    public DateTime? CheckinAt { get; set; }
+    public DateTimeOffset? CheckinAt { get; set; }
 
     [Column("checkin_latitude")]
     public decimal? CheckinLatitude { get; set; }
@@ -55,7 +55,7 @@ public class Visit : FullAuditedAggregateRoot<Guid>
     public GpsFlag? GpsFlag { get; set; }
 
     [Column("checkout_at")]
-    public DateTime? CheckoutAt { get; set; }
+    public DateTimeOffset? CheckoutAt { get; set; }
 
     [Column("checkout_latitude")]
     public decimal? CheckoutLatitude { get; set; }
@@ -82,5 +82,5 @@ public class Visit : FullAuditedAggregateRoot<Guid>
     public SyncStatus SyncStatus { get; set; } = SyncStatus.Pending;
 
     [Column("client_created_at")]
-    public DateTime ClientCreatedAt { get; set; }
+    public DateTimeOffset? ClientCreatedAt { get; set; }
 }

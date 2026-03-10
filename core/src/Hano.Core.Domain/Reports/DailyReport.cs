@@ -58,5 +58,5 @@ public class DailyReport : FullAuditedEntity<Guid>
     public SyncStatus SyncStatus { get; set; } = SyncStatus.Pending;
 
     [Column("client_created_at")]
-    public DateTime ClientCreatedAt { get; set; }
+    public DateTimeOffset? ClientCreatedAt { get; set; }
 }

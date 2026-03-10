@@ -37,10 +37,10 @@ public class SyncQueue : Entity<Guid>
     public string Payload { get; set; } = null!;
 
     [Column("client_timestamp")]
-    public DateTime ClientTimestamp { get; set; }
+    public DateTimeOffset? ClientTimestamp { get; set; }
 
     [Column("server_received_at")]
-    public DateTime ServerReceivedAt { get; set; }
+    public DateTimeOffset? ServerReceivedAt { get; set; }
 
     [Column("status")]
     public SyncQueueStatus Status { get; set; } = SyncQueueStatus.Pending;

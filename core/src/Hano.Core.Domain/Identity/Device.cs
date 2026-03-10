@@ -49,8 +49,8 @@ public class Device : FullAuditedEntity<Guid>
     public bool IsActive { get; set; } = true;
 
     [Column("bound_at")]
-    public DateTime BoundAt { get; set; }
+    public DateTimeOffset? BoundAt { get; set; }
 
     [Column("last_seen_at")]
-    public DateTime? LastSeenAt { get; set; }
+    public DateTimeOffset? LastSeenAt { get; set; }
 }
