@@ -1,0 +1,52 @@
+# Build output
+bin/
+obj/
+
+# IDE & editor
+.vs/
+.idea/
+.cursor/
+*.sln.iml
+*.user
+*.suo
+
+# NuGet
+packages/
+*.nupkg
+
+# Node / ABP libs
+node_modules/
+**/wwwroot/libs/
+
+# Certificates
+*.pfx
+
+# Config — ignore all variants, keep base appsettings.json
+appsettings.*.json
+!appsettings.json
+
+# Test results & coverage
+**/TestResults/
+**/*.coverage
+**/*.coveragexml
+
+# Logs
+**/Logs/
+
+# Database files
+*.sqlite*
+
+# Docker
+dockerfiles/
+
+# Solution settings (not useful for code context)
+Hano.sln.DotSettings
+
+# Blazor WASM bundling (generated)
+core/src/Hano.Core.Blazor.WebAssembly.Bundling/
+
+# EF Migrations (large, generated - read only when needed)
+**/Migrations/
+
+# Test app (console test client)
+test/Hano.HttpApi.Client.ConsoleTestApp/
