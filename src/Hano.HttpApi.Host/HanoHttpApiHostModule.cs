@@ -35,6 +35,7 @@ using Hano.Core;
 using Hano.Core.EntityFrameworkCore;
 using Volo.Abp.MultiTenancy;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace Hano;
 
@@ -214,6 +215,10 @@ public class HanoHttpApiHostModule : AbpModule
         {
             app.UseDeveloperExceptionPage();
         }
+        app.UseForwardedHeaders(new ForwardedHeadersOptions
+        {
+            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.All
+        });
 
         var useHsts = configuration.GetValue("App:UseHsts", false);
         if (useHsts)

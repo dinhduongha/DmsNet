@@ -94,7 +94,7 @@ public class HanoAuthServerModule : AbpModule
             }
         });
 
-        if (!hostingEnvironment.IsDevelopment())
+        //if (!hostingEnvironment.IsDevelopment())
         {
             var pfxPassword = configuration["AuthServer:PfxPassword"];
             PreConfigure<AbpOpenIddictAspNetCoreOptions>(options =>
