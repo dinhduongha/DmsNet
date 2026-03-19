@@ -4,8 +4,42 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Bamboo.Shared.Common;
+using System.IO;
+using System.Threading;
 
 namespace Hano.Core.HttpApi.Controllers;
+
+public class NoTimeoutStream : Stream
+{
+    private readonly Stream _inner;
+
+    public NoTimeoutStream(Stream inner)
+    {
+        _inner = inner;
+    }
+
+    public override bool CanRead => _inner.CanRead;
+    public override bool CanSeek => _inner.CanSeek;
+    public override bool CanWrite => _inner.CanWrite;
+
+    public override long Length => _inner.Length;
+    public override long Position { get => _inner.Position; set => _inner.Position = value; }
+
+    public override int ReadTimeout => Timeout.Infinite; // 🔥 FIX
+    public override int WriteTimeout => Timeout.Infinite;
+
+
+    public override int Read(byte[] buffer, int offset, int count)
+        => _inner.Read(buffer, offset, count);
+
+    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+        => _inner.ReadAsync(buffer, offset, count, cancellationToken);
+
+    public override void Flush() => _inner.Flush();
+    public override long Seek(long offset, SeekOrigin origin) => _inner.Seek(offset, origin);
+    public override void SetLength(long value) => _inner.SetLength(value);
+    public override void Write(byte[] buffer, int offset, int count) => _inner.Write(buffer, offset, count);
+}
 
 /// <summary>
 /// Bulk import of organisational master data, customer outlets, and SKUs.
@@ -34,7 +68,14 @@ public class ImportController(IImportAppService importAppService) : HanoCoreCont
         [FromForm] bool dryRun = false)
     {
         await using var stream = file.OpenReadStream();
-        return await importAppService.ImportMasterDataAsync(stream, new ImportMasterDataInput
+        await using var safeStream = new NoTimeoutStream(stream);
+
+        // await using var memoryStream = new MemoryStream();
+
+        // await stream.CopyToAsync(memoryStream);
+        // memoryStream.Position = 0;
+
+        return await importAppService.ImportMasterDataAsync(safeStream, new ImportMasterDataInput
         {
             ReaderType = readerType,
             DryRun = dryRun,
@@ -55,7 +96,11 @@ public class ImportController(IImportAppService importAppService) : HanoCoreCont
         [FromForm] bool dryRun = false)
     {
         await using var stream = file.OpenReadStream();
-        return await importAppService.ImportCustomersAsync(stream, new ImportCustomersInput
+        await using var memoryStream = new MemoryStream();
+
+        await stream.CopyToAsync(memoryStream);
+        memoryStream.Position = 0;
+        return await importAppService.ImportCustomersAsync(memoryStream, new ImportCustomersInput
         {
             ReaderType = readerType,
             DryRun = dryRun,
@@ -75,7 +120,11 @@ public class ImportController(IImportAppService importAppService) : HanoCoreCont
         [FromForm] bool dryRun = false)
     {
         await using var stream = file.OpenReadStream();
-        return await importAppService.ImportSkusAsync(stream, new ImportSkusInput
+        await using var memoryStream = new MemoryStream();
+
+        await stream.CopyToAsync(memoryStream);
+        memoryStream.Position = 0;
+        return await importAppService.ImportSkusAsync(memoryStream, new ImportSkusInput
         {
             ReaderType = readerType,
             DryRun = dryRun,
