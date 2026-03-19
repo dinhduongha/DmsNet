@@ -5,11 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace Hano.Core.Domain.Entities;
 
 [Table("gps_breadcrumbs")]
-public class GpsBreadcrumb : Entity<Guid>
+public class GpsBreadcrumb : Entity<Guid>, IMultiTenant
 {
     [Key]
     [Column("id")]
@@ -41,4 +42,7 @@ public class GpsBreadcrumb : Entity<Guid>
 
     [Column("battery_level")]
     public float? BatteryLevel { get; set; }
+
+    [Column("sync_status")]
+    public SyncStatus SyncStatus { get; set; } = SyncStatus.Pending;
 }

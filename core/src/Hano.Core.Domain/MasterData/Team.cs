@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace Hano.Core.Domain.Entities;
 
@@ -9,12 +10,15 @@ namespace Hano.Core.Domain.Entities;
 /// GSBH team-level OrganizationUnit metadata.
 /// One record per GSBH Team OU (child of Region OU) — stores the ASM manager and GSBH supervisor.
 /// </summary>
-[Table("dms_teams")]
-public class DmsTeam : AuditedEntity<Guid>
+[Table("teams")]
+public class Team : AuditedEntity<Guid>, IMultiTenant
 {
     [Key]
     [Column("id")]
     public new Guid Id { get => base.Id; set => base.Id = value; }
+
+    [Column("tenant_id")]
+    public Guid? TenantId { get; set; }
 
     [Column("organization_unit_id")]
     public Guid OrganizationUnitId { get; set; }

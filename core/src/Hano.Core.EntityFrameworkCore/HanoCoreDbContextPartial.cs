@@ -35,6 +35,6 @@ public partial class CoreDbContext
     public DbSet<Photo> Photos { get; set; } = null!;
     public DbSet<AppVersionConfig> AppVersionConfigs { get; set; } = null!;
     public DbSet<DailyReport> DailyReports { get; set; } = null!;
-    public DbSet<DmsOrganization> DmsOrganizations { get; set; } = null!;
-    public DbSet<DmsTeam> DmsTeams { get; set; } = null!;
+    public DbSet<Organization> DmsOrganizations { get; set; } = null!;
+    public DbSet<Team> DmsTeams { get; set; } = null!;
 }

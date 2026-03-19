@@ -24,8 +24,8 @@ public class ImportAppService(
     ITenantRepository tenantRepository,
     IRepository<Distributor, Guid> distributorRepository,
     IRepository<Outlet, Guid> outletRepository,
-    IRepository<DmsOrganization, Guid> dmsOrgRepository,
-    IRepository<DmsTeam, Guid> dmsTeamRepository,
+    IRepository<Organization, Guid> dmsOrgRepository,
+    IRepository<Team, Guid> dmsTeamRepository,
     IRepository<Sku, Guid> skuRepository,
     IUnitOfWorkManager uowManager,
     UsernamePasswordGenerator usernameGen
@@ -334,7 +334,7 @@ public class ImportAppService(
             Dictionary<string, OrganizationUnit> existingOuByName,
             HashSet<string> usedUsernames,
             Dictionary<string, IdentityUser> adminByRegion,
-            Dictionary<Guid, DmsOrganization> dmsOrgByOuId,
+            Dictionary<Guid, Organization> dmsOrgByOuId,
             ImportMasterDataResult result)
     {
         var ouMap = new Dictionary<string, OrganizationUnit>(existingOuByName, StringComparer.OrdinalIgnoreCase);
@@ -400,7 +400,7 @@ public class ImportAppService(
             if (!dmsOrgByOuId.ContainsKey(ou.Id))
             {
                 adminByRegion.TryGetValue(regionName, out var adminUser);
-                var dmsOrg = new DmsOrganization
+                var dmsOrg = new Organization
                 {
                     Id = GuidGenerator.Create(),
                     OrganizationUnitId = ou.Id,
@@ -420,7 +420,7 @@ public class ImportAppService(
         Dictionary<string, OrganizationUnit> ouMap,
         Dictionary<string, IdentityUser> asmByRegion,
         HashSet<string> usedUsernames,
-        Dictionary<Guid, DmsTeam> dmsTeamByOuId,
+        Dictionary<Guid, Team> dmsTeamByOuId,
         ImportMasterDataResult result)
     {
         var childOuNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -476,7 +476,7 @@ public class ImportAppService(
                 if (!dmsTeamByOuId.ContainsKey(teamOu.Id))
                 {
                     asmByRegion.TryGetValue(regionName, out var asmUser);
-                    var dmsTeam = new DmsTeam
+                    var dmsTeam = new Team
                     {
                         Id = GuidGenerator.Create(),
                         OrganizationUnitId = teamOu.Id,

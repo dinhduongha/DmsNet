@@ -5,11 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace Hano.Core.Domain.Entities;
 
 [Table("vehicle_stocks")]
-public class VehicleStock : AuditedEntity<Guid>
+public class VehicleStock : AuditedEntity<Guid>, IMultiTenant
 {
     [Key]
     [Column("id")]
@@ -50,4 +51,7 @@ public class VehicleStock : AuditedEntity<Guid>
 
     [Column("current_qty")]
     public decimal CurrentQty { get; set; }
+
+    [Column("sync_status")]
+    public SyncStatus SyncStatus { get; set; } = SyncStatus.Pending;
 }

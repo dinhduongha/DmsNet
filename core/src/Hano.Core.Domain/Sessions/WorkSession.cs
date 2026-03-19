@@ -5,11 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace Hano.Core.Domain.Entities;
 
 [Table("work_sessions")]
-public class WorkSession : FullAuditedAggregateRoot<Guid>
+public class WorkSession : FullAuditedAggregateRoot<Guid>, IMultiTenant
 {
     [Key]
     [Column("id")]
@@ -30,7 +31,7 @@ public class WorkSession : FullAuditedAggregateRoot<Guid>
     [Column("device_id")]
     public Guid DeviceId { get; set; }
 
-    [Column("date")]
+    [Column("session_date")]
     public DateOnly Date { get; set; }
 
     [Column("status")]
@@ -68,6 +69,9 @@ public class WorkSession : FullAuditedAggregateRoot<Guid>
 
     [Column("total_revenue")]
     public decimal TotalRevenue { get; set; }
+
+    [Column("sync_status")]
+    public SyncStatus SyncStatus { get; set; } = SyncStatus.Pending;
 
     public ICollection<GpsBreadcrumb> Breadcrumbs { get; set; } = new List<GpsBreadcrumb>();
 }

@@ -5,11 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace Hano.Core.Domain.Entities;
 
 [Table("reconciliations")]
-public class Reconciliation : FullAuditedAggregateRoot<Guid>
+public class Reconciliation : FullAuditedAggregateRoot<Guid>, IMultiTenant
 {
     [Key]
     [Column("id")]
@@ -44,6 +45,9 @@ public class Reconciliation : FullAuditedAggregateRoot<Guid>
 
     [Column("discrepancy_notes")]
     public string? DiscrepancyNotes { get; set; }
+
+    [Column("sync_status")]
+    public SyncStatus SyncStatus { get; set; } = SyncStatus.Pending;
 
     public ICollection<ReconciliationItem> Items { get; set; } = new List<ReconciliationItem>();
 }

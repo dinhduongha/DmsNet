@@ -5,11 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace Hano.Core.Domain.Entities;
 
 [Table("outlets")]
-public class Outlet : FullAuditedAggregateRoot<Guid>
+public class Outlet : FullAuditedAggregateRoot<Guid>, IMultiTenant
 {
     [Key]
     [Column("id")]
@@ -68,4 +69,10 @@ public class Outlet : FullAuditedAggregateRoot<Guid>
 
     [Column("ods_outlet_id")]
     public string? OdsOutletId { get; set; }
+
+    [Column("sync_status")]
+    public SyncStatus SyncStatus { get; set; } = SyncStatus.Pending;
+
+    [Column("client_created_at")]
+    public DateTimeOffset? ClientCreatedAt { get; set; }
 }

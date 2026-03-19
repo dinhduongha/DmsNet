@@ -5,11 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace Hano.Core.Domain.Entities;
 
 [Table("routes")]
-public class Route : FullAuditedAggregateRoot<Guid>
+public class Route : FullAuditedAggregateRoot<Guid>, IMultiTenant
 {
     [Key]
     [Column("id")]
@@ -50,6 +51,9 @@ public class Route : FullAuditedAggregateRoot<Guid>
 
     [Column("is_active")]
     public bool IsActive { get; set; } = true;
+
+    [Column("sync_status")]
+    public SyncStatus SyncStatus { get; set; } = SyncStatus.Pending;
 
     public ICollection<RouteOutlet> Outlets { get; set; } = new List<RouteOutlet>();
 }

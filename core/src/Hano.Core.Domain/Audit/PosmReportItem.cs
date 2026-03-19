@@ -5,11 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace Hano.Core.Domain.Entities;
 
 [Table("posm_report_items")]
-public class PosmReportItem : Entity<Guid>
+public class PosmReportItem : Entity<Guid>, IMultiTenant
 {
     [Key]
     [Column("id")]

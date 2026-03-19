@@ -5,11 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace Hano.Core.Domain.Entities;
 
 [Table("promotions")]
-public class Promotion : FullAuditedEntity<Guid>
+public class Promotion : FullAuditedEntity<Guid>, IMultiTenant
 {
     [Key]
     [Column("id")]

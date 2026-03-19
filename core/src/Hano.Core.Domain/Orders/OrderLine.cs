@@ -5,11 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace Hano.Core.Domain.Entities;
 
 [Table("order_lines")]
-public class OrderLine : Entity<Guid>
+public class OrderLine : Entity<Guid>, IMultiTenant
 {
     [Key]
     [Column("id")]
@@ -50,4 +51,7 @@ public class OrderLine : Entity<Guid>
 
     [Column("discount")]
     public decimal Discount { get; set; }
+
+    [Column("sync_status")]
+    public SyncStatus SyncStatus { get; set; } = SyncStatus.Pending;
 }

@@ -5,11 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace Hano.Core.Domain.Entities;
 
 [Table("osa_report_items")]
-public class OsaReportItem : Entity<Guid>
+public class OsaReportItem : Entity<Guid>, IMultiTenant
 {
     [Key]
     [Column("id")]

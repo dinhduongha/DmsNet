@@ -529,7 +529,7 @@ public static partial class HanoCoreModelCreatingExtensions
 
     public static void ConfigureDmsOrganization(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<DmsOrganization>(b =>
+        modelBuilder.Entity<Organization>(b =>
         {
             b.ToTable("dms_organizations");
             b.HasKey(x => x.Id);
@@ -547,7 +547,7 @@ public static partial class HanoCoreModelCreatingExtensions
 
     public static void ConfigureDmsTeam(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<DmsTeam>(b =>
+        modelBuilder.Entity<Team>(b =>
         {
             b.ToTable("dms_teams");
             b.HasKey(x => x.Id);
