@@ -1,18 +1,19 @@
-using Microsoft.EntityFrameworkCore;
-using Hano.Core.Domain.Identity;
-using Hano.Core.Domain.Sessions;
-using Hano.Core.Domain.Visits;
-using Hano.Core.Domain.Orders;
+using Hano.Core.Domain.AppVersion;
 using Hano.Core.Domain.Audit;
 using Hano.Core.Domain.Feedback;
-using Hano.Core.Domain.Notifications;
-using Hano.Core.Domain.Routes;
-using Hano.Core.Domain.Outlets;
+using Hano.Core.Domain.Identity;
 using Hano.Core.Domain.MasterData;
-using Hano.Core.Domain.Sync;
+using Hano.Core.Domain.Notifications;
+using Hano.Core.Domain.Orders;
+using Hano.Core.Domain.Organizations;
+using Hano.Core.Domain.Outlets;
 using Hano.Core.Domain.Photos;
-using Hano.Core.Domain.AppVersion;
 using Hano.Core.Domain.Reports;
+using Hano.Core.Domain.Routes;
+using Hano.Core.Domain.Sessions;
+using Hano.Core.Domain.Sync;
+using Hano.Core.Domain.Visits;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hano.Core.EntityFrameworkCore;
 
@@ -48,4 +49,6 @@ public partial class CoreDbContext
     public DbSet<Photo> Photos { get; set; } = null!;
     public DbSet<AppVersionConfig> AppVersionConfigs { get; set; } = null!;
     public DbSet<DailyReport> DailyReports { get; set; } = null!;
+    public DbSet<DmsOrganization> DmsOrganizations { get; set; } = null!;
+    public DbSet<DmsTeam> DmsTeams { get; set; } = null!;
 }

@@ -1,25 +1,24 @@
 using System;
 using System.Linq;
-
-using Microsoft.EntityFrameworkCore;
-using Volo.Abp.Domain.Entities;
-
-using Hano.Core.EntityFrameworkCore.EntityConfigurations;
 using Hano.Core.Domain.Audit;
-using Hano.Core.Domain.Identity;
-using Volo.Abp.EntityFrameworkCore.Modeling;
-using Hano.Core.Domain.Reports;
 using Hano.Core.Domain.Feedback;
+using Hano.Core.Domain.Identity;
 using Hano.Core.Domain.MasterData;
 using Hano.Core.Domain.Notifications;
 using Hano.Core.Domain.Orders;
+using Hano.Core.Domain.Organizations;
 using Hano.Core.Domain.Outlets;
 using Hano.Core.Domain.Photos;
+using Hano.Core.Domain.Reports;
 using Hano.Core.Domain.Routes;
 using Hano.Core.Domain.Sessions;
 using Hano.Core.Domain.Sync;
 using Hano.Core.Domain.Visits;
+using Hano.Core.EntityFrameworkCore.EntityConfigurations;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Volo.Abp.Domain.Entities;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace Hano.Core.EntityFrameworkCore;
 
@@ -56,6 +55,8 @@ public static partial class HanoCoreModelCreatingExtensions
         builder.ConfigureGpsBreadcrumb();
         builder.ConfigureSyncQueue();
         builder.ConfigureVisit();
+        builder.ConfigureDmsOrganization();
+        builder.ConfigureDmsTeam();
 
         //builder.UseUuidV7();
         builder.SnakeCase();
@@ -534,6 +535,42 @@ public static partial class HanoCoreModelCreatingExtensions
             b.HasIndex(x => new { x.UserId, x.CheckinAt });
             b.HasIndex(x => x.OutletId);
 
+            b.TryConfigureConcurrencyStamp();
+            b.TryConfigureExtraProperties();
+        });
+    }
+
+    public static void ConfigureDmsOrganization(this ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<DmsOrganization>(b =>
+        {
+            b.ToTable("dms_organizations");
+            b.HasKey(x => x.Id);
+            b.Property(x => x.Id)
+                .HasDefaultValueSql("uuidv7()")
+                .HasColumnName("id");
+            b.Property(x => x.OrganizationUnitId).HasColumnName("organization_unit_id").IsRequired();
+            b.Property(x => x.AdminUserId).HasColumnName("admin_user_id");
+            b.Property(x => x.SaleManagerUserId).HasColumnName("sale_manager_user_id");
+            b.HasIndex(x => x.OrganizationUnitId).IsUnique();
+            b.TryConfigureConcurrencyStamp();
+            b.TryConfigureExtraProperties();
+        });
+    }
+
+    public static void ConfigureDmsTeam(this ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<DmsTeam>(b =>
+        {
+            b.ToTable("dms_teams");
+            b.HasKey(x => x.Id);
+            b.Property(x => x.Id)
+                .HasDefaultValueSql("uuidv7()")
+                .HasColumnName("id");
+            b.Property(x => x.OrganizationUnitId).HasColumnName("organization_unit_id").IsRequired();
+            b.Property(x => x.ManagerUserId).HasColumnName("manager_user_id");
+            b.Property(x => x.SupervisorUserId).HasColumnName("supervisor_user_id");
+            b.HasIndex(x => x.OrganizationUnitId).IsUnique();
             b.TryConfigureConcurrencyStamp();
             b.TryConfigureExtraProperties();
         });

@@ -9,11 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MiniExcel" Version="2.0.0-preview.2" />
+    <PackageReference Include="EPPlus" Version="4.5.3.3" />
+    <PackageReference Include="NPOI" Version="2.7.6" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Volo.Abp.Mapperly" Version="10.2.0-rc.1" />
     <PackageReference Include="Volo.Abp.Ddd.Application" Version="10.2.0-rc.1" />
+    <PackageReference Include="Volo.Abp.Identity.Domain" Version="10.2.0-rc.1" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Domain" Version="10.2.0-rc.1" />
     <ProjectReference Include="..\Hano.Core.Application.Contracts\Hano.Core.Application.Contracts.csproj" />
     <ProjectReference Include="..\Hano.Core.Domain\Hano.Core.Domain.csproj" />
-    <ProjectReference Include="..\Hano.Core.BackgroundJobs\Hano.Core.BackgroundJobs.csproj" />    
+    <ProjectReference Include="..\Hano.Core.BackgroundJobs\Hano.Core.BackgroundJobs.csproj" />
   </ItemGroup>
 
 </Project>

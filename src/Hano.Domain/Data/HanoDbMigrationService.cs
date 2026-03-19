@@ -102,8 +102,8 @@ public class HanoDbMigrationService : ITransientDependency
     private async Task SeedDataAsync(Tenant? tenant = null)
     {
         Logger.LogInformation($"Executing {(tenant == null ? "host" : tenant.Name + " tenant")} database seed...");
-        string adminEmail = _configuration.GetValue<string>("App:AdminEmail", IdentityDataSeedContributor.AdminEmailDefaultValue);
-        string adminPassword = _configuration.GetValue<string>("App:AdminPassword", IdentityDataSeedContributor.AdminPasswordDefaultValue);
+        string adminEmail = _configuration.GetValue("App:AdminEmail", IdentityDataSeedContributor.AdminEmailDefaultValue);
+        string adminPassword = _configuration.GetValue("App:AdminPassword", IdentityDataSeedContributor.AdminPasswordDefaultValue);
 
         await _dataSeeder.SeedAsync(new DataSeedContext(tenant?.Id)
             .WithProperty(IdentityDataSeedContributor.AdminUserNamePropertyName, tenant == null ? IdentityDataSeedContributor.AdminUserNameDefaultValue : tenant.Name)
@@ -111,10 +111,10 @@ public class HanoDbMigrationService : ITransientDependency
             .WithProperty(IdentityDataSeedContributor.AdminPasswordPropertyName, tenant == null ? adminPassword : IdentityDataSeedContributor.AdminPasswordDefaultValue)
         );
 
-        await _dataSeeder.SeedAsync(new DataSeedContext(tenant?.Id)
-            .WithProperty(IdentityDataSeedContributor.AdminEmailPropertyName, IdentityDataSeedContributor.AdminEmailDefaultValue)
-            .WithProperty(IdentityDataSeedContributor.AdminPasswordPropertyName, IdentityDataSeedContributor.AdminPasswordDefaultValue)
-        );
+        // await _dataSeeder.SeedAsync(new DataSeedContext(tenant?.Id)
+        //     .WithProperty(IdentityDataSeedContributor.AdminEmailPropertyName, IdentityDataSeedContributor.AdminEmailDefaultValue)
+        //     .WithProperty(IdentityDataSeedContributor.AdminPasswordPropertyName, IdentityDataSeedContributor.AdminPasswordDefaultValue)
+        // );
     }
 
     private bool AddInitialMigrationIfNotExist()

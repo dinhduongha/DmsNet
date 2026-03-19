@@ -42,6 +42,9 @@ public class Sku : FullAuditedEntity<Guid>
     [Column("image_url")]
     public string? ImageUrl { get; set; }
 
+    [Column("brand")]
+    public string? Brand { get; set; }
+
     [Column("is_active")]
     public bool IsActive { get; set; } = true;
 
