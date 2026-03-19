@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Hano.Core.Application.Contracts.Sync;
-using Hano.Core.Application.Contracts.Sync.Dtos;
-using Hano.Core.Domain.Sync;
 using Hano.Core.Domain.Shared.Enums;
 using Microsoft.Extensions.Logging;
 using Volo.Abp;

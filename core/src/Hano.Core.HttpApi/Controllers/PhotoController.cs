@@ -1,9 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using Hano.Core.Application.Contracts.Photos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Hano.Core.Application.Contracts.Photos;
-using Hano.Core.Application.Contracts.Photos.Dtos;
 
 namespace Hano.Core.HttpApi.Controllers;
 

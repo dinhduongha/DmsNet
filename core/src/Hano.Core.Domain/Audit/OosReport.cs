@@ -7,7 +7,7 @@ using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace Hano.Core.Domain.Audit;
+namespace Hano.Core.Domain.Entities;
 
 [Table("oos_reports")]
 public class OosReport : FullAuditedAggregateRoot<Guid>, IMultiTenant

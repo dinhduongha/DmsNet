@@ -1,9 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using Hano.Core.Application.Contracts.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Hano.Core.Application.Contracts.Notifications;
-using Hano.Core.Application.Contracts.Notifications.Dtos;
 using Volo.Abp.Application.Dtos;
 
 namespace Hano.Core.HttpApi.Controllers;

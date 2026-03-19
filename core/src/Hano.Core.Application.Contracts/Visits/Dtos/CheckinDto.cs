@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-namespace Hano.Core.Application.Contracts.Visits.Dtos;
+namespace Hano.Core.Application.Contracts.Dtos;
 
 public class CheckinDto
 {

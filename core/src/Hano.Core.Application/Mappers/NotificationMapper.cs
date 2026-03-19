@@ -1,6 +1,5 @@
-using Riok.Mapperly.Abstractions;
-using Hano.Core.Application.Contracts.Notifications.Dtos;
 using Hano.Core.Domain.Notifications;
+using Riok.Mapperly.Abstractions;
 
 namespace Hano.Core.Application.Mappers;
 

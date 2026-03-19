@@ -6,7 +6,7 @@ using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace Hano.Core.Domain.Routes;
+namespace Hano.Core.Domain.Entities;
 
 [Table("route_outlets")]
 public class RouteOutlet : Entity<Guid>

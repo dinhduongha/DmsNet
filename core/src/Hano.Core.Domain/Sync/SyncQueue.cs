@@ -6,7 +6,7 @@ using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace Hano.Core.Domain.Sync;
+namespace Hano.Core.Domain.Entities;
 
 [Table("sync_queue")]
 public class SyncQueue : Entity<Guid>

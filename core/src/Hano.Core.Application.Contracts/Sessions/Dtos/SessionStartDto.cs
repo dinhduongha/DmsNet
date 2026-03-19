@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-namespace Hano.Core.Application.Contracts.Sessions.Dtos;
+namespace Hano.Core.Application.Contracts.Dtos;
 
 public class SessionStartDto
 {

@@ -1,7 +1,5 @@
+using Bamboo.Shared.Common;
 using Hano.Core.Application;
-using Hano.Core.Domain.MasterData;
-using Hano.Core.Domain.Organizations;
-using Hano.Core.Domain.Outlets;
 using Hano.Core.Domain.Shared.Enums;
 using Hano.Core.Import.Dtos;
 using Hano.Core.Import.Excel;
@@ -13,8 +11,6 @@ using Volo.Abp.Identity;
 using Volo.Abp.MultiTenancy;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.Uow;
-
-using Bamboo.Shared.Common;
 namespace Hano.Core.Import;
 
 [Authorize(Roles = "admin")]

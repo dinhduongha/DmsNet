@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-namespace Hano.Core.Application.Contracts.Dashboard.Dtos;
+namespace Hano.Core.Application.Contracts.Dtos;
 
 public class NvbhDashboardDto
 {

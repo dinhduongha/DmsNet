@@ -2,7 +2,7 @@ using System.IO;
 using System.Linq;
 using FluentValidation;
 
-namespace Hano.Core.Application.Contracts.Photos.Dtos;
+namespace Hano.Core.Application.Contracts.Dtos;
 
 public class PresignedUrlRequestDtoValidator : AbstractValidator<PresignedUrlRequestDto>
 {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Application.Dtos;
-namespace Hano.Core.Application.Contracts.Orders.Dtos;
+namespace Hano.Core.Application.Contracts.Dtos;
 
 public class OrderDto : EntityDto<Guid>
 {

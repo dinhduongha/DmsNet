@@ -6,7 +6,7 @@ using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace Hano.Core.Domain.Identity;
+namespace Hano.Core.Domain.Entities;
 
 [Table("devices")]
 public class Device : FullAuditedEntity<Guid>

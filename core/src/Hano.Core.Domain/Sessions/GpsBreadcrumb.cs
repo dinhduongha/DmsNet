@@ -6,7 +6,7 @@ using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace Hano.Core.Domain.Sessions;
+namespace Hano.Core.Domain.Entities;
 
 [Table("gps_breadcrumbs")]
 public class GpsBreadcrumb : Entity<Guid>

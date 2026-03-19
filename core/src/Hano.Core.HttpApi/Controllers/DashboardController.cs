@@ -1,8 +1,7 @@
 using System.Threading.Tasks;
+using Hano.Core.Application.Contracts.Dashboard;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Hano.Core.Application.Contracts.Dashboard;
-using Hano.Core.Application.Contracts.Dashboard.Dtos;
 
 namespace Hano.Core.HttpApi.Controllers;
 

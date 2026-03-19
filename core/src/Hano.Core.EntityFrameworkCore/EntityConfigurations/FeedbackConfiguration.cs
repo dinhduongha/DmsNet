@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Hano.Core.Domain.Feedback;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace Hano.Core.EntityFrameworkCore.EntityConfigurations;

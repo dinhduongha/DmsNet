@@ -1,10 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Hano.Core.Application.Contracts.Photos;
-using Hano.Core.Application.Contracts.Photos.Dtos;
-using Hano.Core.Domain.Photos;
 using Hano.Core.Domain.Shared;
+using Microsoft.Extensions.Configuration;
 using Volo.Abp;
 using Volo.Abp.Domain.Repositories;
 

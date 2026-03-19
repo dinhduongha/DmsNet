@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Hano.Core.Application.Contracts.Notifications;
-using Hano.Core.Application.Contracts.Notifications.Dtos;
 using Hano.Core.Application.Mappers;
 using Hano.Core.Domain.Notifications;
 using Volo.Abp.Application.Dtos;

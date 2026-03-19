@@ -6,7 +6,7 @@ using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace Hano.Core.Domain.Outlets;
+namespace Hano.Core.Domain.Entities;
 
 [Table("outlets")]
 public class Outlet : FullAuditedAggregateRoot<Guid>

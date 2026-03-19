@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Hano.Core.Application.Contracts.Visits;
-using Hano.Core.Application.Contracts.Visits.Dtos;
 using Hano.Core.Application.Mappers;
-using Hano.Core.Domain.Outlets;
-using Hano.Core.Domain.Visits;
 using Hano.Core.Domain.Shared;
 using Hano.Core.Domain.Shared.Enums;
+using Microsoft.Extensions.Caching.Distributed;
 using Volo.Abp;
 using Volo.Abp.Domain.Repositories;
-using Microsoft.Extensions.Caching.Distributed;
 
 namespace Hano.Core.Application.Visits;
 

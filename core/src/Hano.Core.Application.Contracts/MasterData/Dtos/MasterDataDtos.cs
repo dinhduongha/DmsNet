@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-namespace Hano.Core.Application.Contracts.MasterData.Dtos;
+namespace Hano.Core.Application.Contracts.Dtos;
 
 public class MasterDataSyncResponseDto
 {

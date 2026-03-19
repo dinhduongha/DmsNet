@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Hano.Core.Application.Contracts.Visits;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Hano.Core.Application.Contracts.Visits;
-using Hano.Core.Application.Contracts.Visits.Dtos;
 
 namespace Hano.Core.HttpApi.Controllers;
 

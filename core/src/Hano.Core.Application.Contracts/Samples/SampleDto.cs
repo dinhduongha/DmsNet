@@ -1,4 +1,4 @@
-﻿namespace Hano.Core.Samples;
+namespace Hano.Core.Application.Contracts.Dtos;
 
 public class SampleDto
 {

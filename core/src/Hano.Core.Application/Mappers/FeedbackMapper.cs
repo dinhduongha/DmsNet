@@ -1,6 +1,4 @@
 using Riok.Mapperly.Abstractions;
-using Hano.Core.Application.Contracts.Feedback.Dtos;
-using Hano.Core.Domain.Feedback;
 
 namespace Hano.Core.Application.Mappers;
 

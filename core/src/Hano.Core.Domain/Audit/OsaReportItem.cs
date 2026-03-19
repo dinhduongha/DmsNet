@@ -6,7 +6,7 @@ using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace Hano.Core.Domain.Audit;
+namespace Hano.Core.Domain.Entities;
 
 [Table("osa_report_items")]
 public class OsaReportItem : Entity<Guid>

@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Hano.Core.Application.Contracts.Sync.Dtos;
 using Volo.Abp.Application.Services;
 namespace Hano.Core.Application.Contracts.Sync;
 

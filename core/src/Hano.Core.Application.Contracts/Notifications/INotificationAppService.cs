@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Hano.Core.Application.Contracts.Notifications.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 

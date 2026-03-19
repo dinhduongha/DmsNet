@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace Hano.Core.Application.Contracts.Routes.Dtos;
+namespace Hano.Core.Application.Contracts.Dtos;
 
 public class CreateRouteDto
 {

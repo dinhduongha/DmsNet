@@ -1,6 +1,6 @@
 using System;
 using Hano.Core.Domain.Shared.Enums;
-namespace Hano.Core.Application.Contracts.Photos.Dtos;
+namespace Hano.Core.Application.Contracts.Dtos;
 
 public class PresignedUrlRequestDto
 {

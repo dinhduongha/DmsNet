@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Application.Dtos;
-namespace Hano.Core.Application.Contracts.Visits.Dtos;
+namespace Hano.Core.Application.Contracts.Dtos;
 
 public class VisitDto : EntityDto<Guid>
 {

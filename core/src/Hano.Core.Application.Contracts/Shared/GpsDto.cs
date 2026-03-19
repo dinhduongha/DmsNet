@@ -1,4 +1,4 @@
-namespace Hano.Core.Application.Contracts.Shared;
+namespace Hano.Core.Application.Contracts.Dtos;
 
 public class GpsDto
 {

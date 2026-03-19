@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace Hano.Core.Domain.Organizations;
+namespace Hano.Core.Domain.Entities;
 
 /// <summary>
 /// GSBH team-level OrganizationUnit metadata.

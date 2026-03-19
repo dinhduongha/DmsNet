@@ -1,9 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using Hano.Core.Application.Contracts.Outlets;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Hano.Core.Application.Contracts.Outlets;
-using Hano.Core.Application.Contracts.Outlets.Dtos;
 using Volo.Abp.Application.Dtos;
 
 namespace Hano.Core.HttpApi.Controllers;

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Hano.Core.Domain.Shared.Enums;
-namespace Hano.Core.Application.Contracts.Orders.Dtos;
+namespace Hano.Core.Application.Contracts.Dtos;
 
 public class CreateOrderDto
 {

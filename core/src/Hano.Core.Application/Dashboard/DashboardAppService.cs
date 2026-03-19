@@ -2,10 +2,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Hano.Core.Application.Contracts.Dashboard;
-using Hano.Core.Application.Contracts.Dashboard.Dtos;
-using Hano.Core.Domain.Orders;
-using Hano.Core.Domain.Sessions;
-using Hano.Core.Domain.Visits;
 using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Domain.Repositories;
 

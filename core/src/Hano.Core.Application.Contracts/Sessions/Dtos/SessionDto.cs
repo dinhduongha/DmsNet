@@ -1,7 +1,7 @@
 using System;
 using Hano.Core.Domain.Shared.Enums;
 using Volo.Abp.Application.Dtos;
-namespace Hano.Core.Application.Contracts.Sessions.Dtos;
+namespace Hano.Core.Application.Contracts.Dtos;
 
 public class SessionDto : EntityDto<Guid>
 {

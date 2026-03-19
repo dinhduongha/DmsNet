@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Hano.Core.Application.Contracts.Visits.Dtos;
 using Volo.Abp.Application.Services;
 namespace Hano.Core.Application.Contracts.Visits;
 
