@@ -7,11 +7,20 @@ namespace Hano.Core.Import;
 public interface IImportAppService
 {
     /// <summary>
-    /// Import master data from "Danh sách vùng, NPP, GSBH, NVBH, ADMIN" Excel file.
-    /// Creates: OrganizationUnits (regions), Users with roles, Tenants + Distributors (NPP).
-    /// Must be run BEFORE ImportCustomersAsync.
+    /// Step 1 — Import ABP system entities from the master-data Excel file.
+    /// Creates: AbpUsers (all roles), AbpOrganizationUnits (regions + teams),
+    ///          AbpUserOrganizationUnits, AbpTenants (one per NPP).
+    /// Must be called before ImportDomainRecordsAsync.
     /// </summary>
-    Task<ImportMasterDataResult> ImportMasterDataAsync(Stream fileStream, ImportMasterDataInput input);
+    Task<ImportAbpEntitiesResult> ImportAbpEntitiesAsync(Stream fileStream, ImportMasterDataInput input);
+
+    /// <summary>
+    /// Step 2 — Import domain records from the master-data Excel file.
+    /// Creates: regions table (Organization), teams table (Team), distributors table.
+    /// Fetches ABP entities (OUs, users, tenants) fresh from DB — independent of Step 1 result.
+    /// Must be called after ImportAbpEntitiesAsync.
+    /// </summary>
+    Task<ImportDomainRecordsResult> ImportDomainRecordsAsync(Stream fileStream, ImportMasterDataInput input);
 
     /// <summary>
     /// Import customer list from "Danh sách khách hàng" Excel file.

@@ -1,11 +1,11 @@
+using System.IO;
+using System.Threading;
+using Bamboo.Shared.Common;
 using Hano.Core.Import;
 using Hano.Core.Import.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Bamboo.Shared.Common;
-using System.IO;
-using System.Threading;
 
 namespace Hano.Core.HttpApi.Controllers;
 
@@ -57,7 +57,8 @@ public class ImportController(IImportAppService importAppService) : HanoCoreCont
 {
     /// <summary>
     /// Import "Danh sách vùng, NPP, GSBH, NVBH, ADMIN" Excel file.
-    /// Creates: OrganizationUnits, Users (ASM/GSBH/NVBH/admin), Tenants, Distributors.
+    /// Step 1: creates AbpUsers, OrganizationUnits, AbpTenants.
+    /// Step 2: creates domain records (regions, teams, distributors) — reads ABP entities fresh from DB.
     /// </summary>
     [HttpPost("master-data")]
     [RequestSizeLimit(52_428_800)] // 50 MB
@@ -67,19 +68,26 @@ public class ImportController(IImportAppService importAppService) : HanoCoreCont
         [FromForm] ExcelReaderType readerType = ExcelReaderType.MiniExcel,
         [FromForm] bool dryRun = false)
     {
-        await using var stream = file.OpenReadStream();
-        await using var safeStream = new NoTimeoutStream(stream);
+        // Buffer to memory so the stream can be read twice (Step 1 and Step 2).
+        await using var rawStream = file.OpenReadStream();
+        using var buf = new MemoryStream();
+        await rawStream.CopyToAsync(buf);
+        var bytes = buf.ToArray();
 
-        // await using var memoryStream = new MemoryStream();
+        var input = new ImportMasterDataInput { ReaderType = readerType, DryRun = dryRun };
 
-        // await stream.CopyToAsync(memoryStream);
-        // memoryStream.Position = 0;
+        var abpResult = await importAppService.ImportAbpEntitiesAsync(
+            new NoTimeoutStream(new MemoryStream(bytes)), input);
 
-        return await importAppService.ImportMasterDataAsync(safeStream, new ImportMasterDataInput
+        var domainResult = await importAppService.ImportDomainRecordsAsync(
+            new NoTimeoutStream(new MemoryStream(bytes)), input);
+
+        return new ImportMasterDataResult
         {
-            ReaderType = readerType,
-            DryRun = dryRun,
-        });
+            AbpEntities = abpResult,
+            DomainRecords = domainResult,
+            IsDryRun = dryRun,
+        };
     }
 
     /// <summary>

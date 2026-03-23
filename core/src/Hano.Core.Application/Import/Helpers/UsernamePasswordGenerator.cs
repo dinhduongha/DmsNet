@@ -4,70 +4,79 @@ namespace Hano.Core.Import.Helpers;
 /// Generates unique usernames and matching passwords for bulk import.
 ///
 /// Username rules (Vietnamese name convention — family name first, given name last):
-///   - "Tạ Quyết Chiến" → firstName="Chiến", familyName="Tạ"
-///   - NVBH / GSBH with region : "{regionCode}.{slug(firstName)}.{slug(familyName)}"  e.g. "hn.chien.ta"
-///   - ASM  / Admin (no region) : "{slug(firstName)}.{slug(familyName)}"               e.g. "chien.ta"
-///   - On conflict              : append ".{XXXX}" 4-digit suffix                       e.g. "hn.chien.ta.5678"
+///   - "Tran Thi Tho"   → base = "trantho"
+///   - "Tạ Quyết Chiến" → base = "tachien"
+///   - No region prefix, no dots — pure family+given concatenation.
+///   - On conflict: append the person's own STT index → "trantho14"
+///   - Very rare double conflict: "trantho14_2", "trantho14_3", …
 ///
-/// Password: "{username}$$${XXXX}" where XXXX = same digits as suffix on conflict,
-///           or fresh random digits when no conflict. Always has digits (Identity compliance).
+/// Password: always "{FamilyCased}{GivenCased}$$${index}"
+///   - "Tran Thi Tho" at STT 14 → password = "TranTho$$$14"
+///   - Password does NOT change on username conflict — stays tied to the name + row index.
 ///
 /// Priority guaranteed by call order (Admin → ASM → GSBH → NVBH): higher-priority roles
-/// are processed first and claim base usernames; lower-priority clashes get a numeric suffix.
+/// are processed first and claim base usernames; lower-priority clashes get the index suffix.
 /// </summary>
 public class UsernamePasswordGenerator
 {
-    private readonly Random _rng = new();
-
     /// <param name="displayName">Full display name (Vietnamese, e.g. "Tạ Quyết Chiến").</param>
-    /// <param name="regionCode">Region prefix for NVBH/GSBH, or null for ASM/Admin.</param>
+    /// <param name="index">STT row index from Excel — used for conflict suffix and password.</param>
     /// <param name="usedUsernames">
     ///   In-memory set of already-allocated usernames. Mutated on success so subsequent
     ///   calls within the same import batch see previous allocations.
     /// </param>
-    public (string Username, string Password) Generate(
+    public static (string Username, string Password) Generate(
         string displayName,
-        string? regionCode,
+        int index,
         HashSet<string> usedUsernames)
     {
         var (firstName, familyName) = VietnameseSlugHelper.ExtractNameParts(displayName);
-        var firstSlug = VietnameseSlugHelper.ToSlug(firstName);
+        var givenSlug = VietnameseSlugHelper.ToSlug(firstName);
         var familySlug = VietnameseSlugHelper.ToSlug(familyName);
 
-        string baseUsername;
-        if (!string.IsNullOrEmpty(familySlug))
-            baseUsername = string.IsNullOrEmpty(regionCode)
-                ? $"{firstSlug}.{familySlug}"
-                : $"{regionCode.ToLowerInvariant()}.{firstSlug}.{familySlug}";
-        else
-            // single-word name fallback
-            baseUsername = string.IsNullOrEmpty(regionCode)
-                ? firstSlug
-                : $"{regionCode.ToLowerInvariant()}.{firstSlug}";
+        // Username: family+given, no separator
+        var baseUsername = string.IsNullOrEmpty(familySlug)
+            ? givenSlug
+            : $"{familySlug}{givenSlug}";
+
+        // Password: CamelCase family+given + $$$ + index (constant regardless of conflict)
+        var givenCased = CapitalizeFirst(givenSlug);
+        var familyCased = CapitalizeFirst(familySlug);
+        var password = string.IsNullOrEmpty(familyCased)
+            ? $"{givenCased}$$${index}"
+            : $"{familyCased}{givenCased}$$${index}";
 
         if (!usedUsernames.Contains(baseUsername, StringComparer.OrdinalIgnoreCase))
         {
             usedUsernames.Add(baseUsername);
-            var pwdDigits = _rng.Next(1000, 9999).ToString();
-            return (baseUsername, $"{baseUsername}$$${pwdDigits}");
+            return (baseUsername, password);
         }
 
-        // Resolve conflict — same digits in both username suffix and password
-        for (int attempt = 0; attempt < 30; attempt++)
+        // Conflict: append the person's own STT index
+        var withIndex = $"{baseUsername}{index}";
+        if (!usedUsernames.Contains(withIndex, StringComparer.OrdinalIgnoreCase))
         {
-            var digits = _rng.Next(1000, 9999).ToString();
-            var candidate = $"{baseUsername}.{digits}";
+            usedUsernames.Add(withIndex);
+            return (withIndex, password);
+        }
+
+        // Very rare — same name AND same index in same batch; append counter
+        for (var n = 2; n < 200; n++)
+        {
+            var candidate = $"{baseUsername}{index}_{n}";
             if (!usedUsernames.Contains(candidate, StringComparer.OrdinalIgnoreCase))
             {
                 usedUsernames.Add(candidate);
-                return (candidate, $"{candidate}$$${digits}");
+                return (candidate, password);
             }
         }
 
-        // Fallback: timestamp-based suffix (extremely unlikely)
-        var ts = (DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() % 10000).ToString("D4");
-        var fallback = $"{baseUsername}.{ts}";
+        // Absolute fallback (practically impossible)
+        var fallback = $"{baseUsername}{index}_{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() % 10000}";
         usedUsernames.Add(fallback);
-        return (fallback, $"{fallback}$$${ts}");
+        return (fallback, password);
     }
+
+    private static string CapitalizeFirst(string? s) =>
+        string.IsNullOrEmpty(s) ? string.Empty : char.ToUpper(s[0]) + s[1..];
 }

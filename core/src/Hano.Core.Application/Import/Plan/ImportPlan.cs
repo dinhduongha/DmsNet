@@ -4,7 +4,7 @@ namespace Hano.Core.Import.Plan;
 public record AdminSpec(int Index, string DisplayName, string Region, string Username, string Password);
 
 /// <summary>An ASM user to create (dms_sale_manager role) — embedded in RegionSpec.</summary>
-public record AsmSpec(string DisplayName, string Username, string Password);
+public record AsmSpec(int Index, string DisplayName, string Username, string Password);
 
 /// <summary>A region OU to create/reuse, with its optional ASM.</summary>
 public record RegionSpec(int Index, string RegionName, string? RegionCode, AsmSpec? Asm);

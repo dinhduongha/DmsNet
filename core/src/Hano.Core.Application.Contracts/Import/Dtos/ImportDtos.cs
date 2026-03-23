@@ -38,16 +38,20 @@ public class ImportSkusInput
     public bool DryRun { get; set; }
 }
 
-// ─── Result DTOs ─────────────────────────────────────────────────────────────
+// ─── Master Data Result DTOs ──────────────────────────────────────────────────
 
-public class ImportMasterDataResult
+/// <summary>
+/// Result of Step 1: creating ABP system entities
+/// (AbpUsers, AbpOrganizationUnits, AbpUserOrganizationUnits, AbpTenants).
+/// </summary>
+public class ImportAbpEntitiesResult
 {
-    public int RegionsCreated { get; set; }
-    public int RegionsSkipped { get; set; }
     public int UsersCreated { get; set; }
     public int UsersSkipped { get; set; }
+    public int OusCreated { get; set; }
+    public int OusSkipped { get; set; }
     public int TenantsCreated { get; set; }
-    public int DistributorsCreated { get; set; }
+    public int TenantsSkipped { get; set; }
     public bool IsDryRun { get; set; }
 
     /// <summary>
@@ -56,6 +60,36 @@ public class ImportMasterDataResult
     public List<ImportedUserRecord> CreatedUsers { get; set; } = [];
     public List<ImportErrorDto> Errors { get; set; } = [];
 }
+
+/// <summary>
+/// Result of Step 2: creating domain records
+/// (regions, teams, distributors tables).
+/// Reads ABP entities from DB — does NOT depend on Step 1 result object.
+/// </summary>
+public class ImportDomainRecordsResult
+{
+    public int RegionsCreated { get; set; }
+    public int RegionsSkipped { get; set; }
+    public int TeamsCreated { get; set; }
+    public int TeamsSkipped { get; set; }
+    public int DistributorsCreated { get; set; }
+    public int DistributorsSkipped { get; set; }
+    public bool IsDryRun { get; set; }
+    public List<ImportErrorDto> Errors { get; set; } = [];
+}
+
+/// <summary>
+/// Combined HTTP response for POST /api/v1/import/master-data.
+/// The controller calls both steps sequentially and merges them here.
+/// </summary>
+public class ImportMasterDataResult
+{
+    public ImportAbpEntitiesResult AbpEntities { get; set; } = new();
+    public ImportDomainRecordsResult DomainRecords { get; set; } = new();
+    public bool IsDryRun { get; set; }
+}
+
+// ─── Other Result DTOs ────────────────────────────────────────────────────────
 
 public class ImportCustomersResult
 {
@@ -73,6 +107,8 @@ public class ImportSkusResult
     public List<ImportErrorDto> Errors { get; set; } = [];
 }
 
+// ─── Shared ───────────────────────────────────────────────────────────────────
+
 public class ImportedUserRecord
 {
     public string DisplayName { get; set; } = string.Empty;
@@ -80,7 +116,7 @@ public class ImportedUserRecord
 
     /// <summary>
     /// Plain-text password — only returned at creation time.
-    /// Format: {username}$$$ (unique username) or {username}$$${digits} (conflicting username).
+    /// Format: {FamilyCased}{GivenCased}$$${index}.
     /// </summary>
     public string Password { get; set; } = string.Empty;
     public string Role { get; set; } = string.Empty;
