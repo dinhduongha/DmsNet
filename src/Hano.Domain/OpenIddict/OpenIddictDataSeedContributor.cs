@@ -81,15 +81,18 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         };
 
         var configurationSection = _configuration.GetSection("OpenIddict:Applications");
-        var sectionName = "Hano";
-
+        var sectionName = _configuration.GetValue("OpenIddict:SectionName", "");
+        if (!sectionName.IsNullOrWhiteSpace())
+        {
+            sectionName = sectionName + "_";
+        }
         //Web MVC Client
-        var webClientId = configurationSection["Hano_Web:ClientId"];
+        var webClientId = configurationSection[$"{sectionName}Web:ClientId"];
         if (!webClientId.IsNullOrWhiteSpace())
         {
-            var webClientRootUrl = configurationSection["Hano_Web:RootUrl"]!.EnsureEndsWith('/');
-            var redirectUris = configurationSection.GetSection($"{sectionName}_Web:RedirectUris").Get<List<string>>();
-            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}_Web:PostLogoutRedirectUris").Get<List<string>>();
+            var webClientRootUrl = configurationSection[$"{sectionName}Web:RootUrl"]!.EnsureEndsWith('/');
+            var redirectUris = configurationSection.GetSection($"{sectionName}Web:RedirectUris").Get<List<string>>();
+            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}Web:PostLogoutRedirectUris").Get<List<string>>();
 
             /* Hano_Web client is only needed if you created a tiered
              * solution. Otherwise, you can delete this client. */
@@ -98,7 +101,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                 type: OpenIddictConstants.ClientTypes.Confidential,
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
                 displayName: "Web Application",
-                secret: configurationSection["Hano_Web:ClientSecret"]!,
+                secret: configurationSection[$"{sectionName}Web:ClientSecret"]!,
                 grantTypes: new List<string> //Hybrid flow
                 {
                     OpenIddictConstants.GrantTypes.AuthorizationCode,
@@ -114,19 +117,19 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         }
 
         // Blazor WebApp Tiered Client
-        var blazorWebAppTieredClientId = configurationSection["Hano_BlazorWebAppTiered:ClientId"];
+        var blazorWebAppTieredClientId = configurationSection[$"{sectionName}BlazorWebAppTiered:ClientId"];
         if (!blazorWebAppTieredClientId.IsNullOrWhiteSpace())
         {
-            var blazorWebAppTieredRootUrl = configurationSection["Hano_BlazorWebAppTiered:RootUrl"]!.EnsureEndsWith('/');
-            var redirectUris = configurationSection.GetSection($"{sectionName}_BlazorWebAppTiered:RedirectUris").Get<List<string>>();
-            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}_BlazorWebAppTiered:PostLogoutRedirectUris").Get<List<string>>();
+            var blazorWebAppTieredRootUrl = configurationSection[$"{sectionName}BlazorWebAppTiered:RootUrl"]!.EnsureEndsWith('/');
+            var redirectUris = configurationSection.GetSection($"{sectionName}BlazorWebAppTiered:RedirectUris").Get<List<string>>();
+            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}BlazorWebAppTiered:PostLogoutRedirectUris").Get<List<string>>();
 
             await CreateApplicationAsync(
                 name: blazorWebAppTieredClientId!,
                 type: OpenIddictConstants.ClientTypes.Confidential,
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
                 displayName: "Blazor Server Application",
-                secret: configurationSection["Hano_BlazorWebAppTiered:ClientSecret"]!,
+                secret: configurationSection[$"{sectionName}BlazorWebAppTiered:ClientSecret"]!,
                 grantTypes: new List<string> //Hybrid flow
                 {
                     OpenIddictConstants.GrantTypes.AuthorizationCode,
@@ -142,18 +145,18 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         }
 
         // Blazor Server Tiered Client
-        var blazorServerTieredClientId = configurationSection[$"{sectionName}_BlazorServerTiered:ClientId"];
+        var blazorServerTieredClientId = configurationSection[$"{sectionName}BlazorServerTiered:ClientId"];
         if (!blazorServerTieredClientId.IsNullOrWhiteSpace())
         {
-            var blazorServerTieredRootUrl = configurationSection[$"{sectionName}_BlazorServerTiered:RootUrl"]!.EnsureEndsWith('/');
-            var redirectUris = configurationSection.GetSection($"{sectionName}_BlazorServerTiered:RedirectUris").Get<List<string>>();
-            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}_BlazorServerTiered:PostLogoutRedirectUris").Get<List<string>>();
+            var blazorServerTieredRootUrl = configurationSection[$"{sectionName}BlazorServerTiered:RootUrl"]!.EnsureEndsWith('/');
+            var redirectUris = configurationSection.GetSection($"{sectionName}BlazorServerTiered:RedirectUris").Get<List<string>>();
+            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}BlazorServerTiered:PostLogoutRedirectUris").Get<List<string>>();
             await CreateApplicationAsync(
                 name: blazorServerTieredClientId!,
                 type: OpenIddictConstants.ClientTypes.Confidential,
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
                 displayName: "Blazor Server Application",
-                secret: configurationSection[$"{sectionName}_BlazorServerTiered:ClientSecret"]!,
+                secret: configurationSection[$"{sectionName}BlazorServerTiered:ClientSecret"]!,
                 grantTypes: new List<string> //Hybrid flow
                 {
                     OpenIddictConstants.GrantTypes.AuthorizationCode,
@@ -169,12 +172,12 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         }
 
         // Mobile Client
-        var MobileClientId = configurationSection[$"{sectionName}_Mobile:ClientId"];
+        var MobileClientId = configurationSection[$"{sectionName}Mobile:ClientId"];
         if (!MobileClientId.IsNullOrWhiteSpace())
         {
-            var MobileRootUrl = configurationSection[$"{sectionName}_Mobile:RootUrl"]!.EnsureEndsWith('/');
-            var redirectUris = configurationSection.GetSection($"{sectionName}_Mobile:RedirectUris").Get<List<string>>();
-            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}_Mobile:PostLogoutRedirectUris").Get<List<string>>();
+            var MobileRootUrl = configurationSection[$"{sectionName}Mobile:RootUrl"]!.EnsureEndsWith('/');
+            var redirectUris = configurationSection.GetSection($"{sectionName}Mobile:RedirectUris").Get<List<string>>();
+            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}Mobile:PostLogoutRedirectUris").Get<List<string>>();
 
             var mobileScopes = commonScopes;
             mobileScopes.AddFirst("offline_access");
@@ -190,7 +193,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                     OpenIddictConstants.GrantTypes.RefreshToken,
                     OpenIddictConstants.GrantTypes.Password
                 },
-                secret: configurationSection[$"{sectionName}_Mobile:ClientSecret"]!,
+                secret: configurationSection[$"{sectionName}Mobile:ClientSecret"]!,
                 clientUri: MobileRootUrl,
                 redirectUri: $"{MobileRootUrl}authenticated",
                 postLogoutRedirectUri: $"{MobileRootUrl}signout-callback-oidc",
@@ -200,12 +203,12 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         }
 
         // Internal Client
-        var internalClientId = configurationSection[$"{sectionName}_Internal:ClientId"];
+        var internalClientId = configurationSection[$"{sectionName}Internal:ClientId"];
         if (!internalClientId.IsNullOrWhiteSpace())
         {
-            var internalRootUrl = configurationSection[$"{sectionName}_Internal:RootUrl"]!.EnsureEndsWith('/');
-            var redirectUris = configurationSection.GetSection($"{sectionName}_Internal:RedirectUris").Get<List<string>>();
-            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}_Internal:PostLogoutRedirectUris").Get<List<string>>();
+            var internalRootUrl = configurationSection[$"{sectionName}Internal:RootUrl"]!.EnsureEndsWith('/');
+            var redirectUris = configurationSection.GetSection($"{sectionName}Internal:RedirectUris").Get<List<string>>();
+            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}Internal:PostLogoutRedirectUris").Get<List<string>>();
 
             var mobileScopes = commonScopes;
             mobileScopes.AddFirst("offline_access");
@@ -222,7 +225,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                     OpenIddictConstants.GrantTypes.ClientCredentials,
                     OpenIddictConstants.GrantTypes.RefreshToken
                 },
-                secret: configurationSection[$"{sectionName}_Internal:ClientSecret"]!,
+                secret: configurationSection[$"{sectionName}Internal:ClientSecret"]!,
                 clientUri: internalRootUrl,
                 redirectUri: $"{internalRootUrl}authenticated",
                 redirectUris: redirectUris,
@@ -232,12 +235,12 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         }
 
         //Flutter Client
-        var flutterClientId = configurationSection[$"{sectionName}_FlutterApp:ClientId"];
+        var flutterClientId = configurationSection[$"{sectionName}FlutterApp:ClientId"];
         if (!flutterClientId.IsNullOrWhiteSpace())
         {
-            var flutterClientRootUrl = configurationSection[$"{sectionName}_FlutterApp:RootUrl"]?.TrimEnd('/');
-            var redirectUris = configurationSection.GetSection($"{sectionName}_FlutterApp:RedirectUris").Get<List<string>>();
-            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}_FlutterApp:PostLogoutRedirectUris").Get<List<string>>();
+            var flutterClientRootUrl = configurationSection[$"{sectionName}FlutterApp:RootUrl"]?.TrimEnd('/');
+            var redirectUris = configurationSection.GetSection($"{sectionName}FlutterApp:RedirectUris").Get<List<string>>();
+            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}FlutterApp:PostLogoutRedirectUris").Get<List<string>>();
             var mobileScopes = commonScopes;
             mobileScopes.AddFirst("offline_access");
 
@@ -246,7 +249,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                 type: OpenIddictConstants.ClientTypes.Public,
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
                 displayName: "Flutter Application",
-                //secret: configurationSection[$"{sectionName}_FlutterApp:ClientSecret"]!,
+                //secret: configurationSection[$"{sectionName}FlutterApp:ClientSecret"]!,
                 secret: null,
                 grantTypes: new List<string> {
                     OpenIddictConstants.GrantTypes.AuthorizationCode,
@@ -264,12 +267,12 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         }
 
         // React Client
-        var reactClientId = configurationSection[$"{sectionName}_React:ClientId"];
+        var reactClientId = configurationSection[$"{sectionName}React:ClientId"];
         if (!reactClientId.IsNullOrWhiteSpace())
         {
-            var reactClientRootUrl = configurationSection[$"{sectionName}_React:RootUrl"]?.TrimEnd('/');
-            var redirectUris = configurationSection.GetSection($"{sectionName}_React:RedirectUris").Get<List<string>>();
-            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}_React:PostLogoutRedirectUris").Get<List<string>>();
+            var reactClientRootUrl = configurationSection[$"{sectionName}React:RootUrl"]?.TrimEnd('/');
+            var redirectUris = configurationSection.GetSection($"{sectionName}React:RedirectUris").Get<List<string>>();
+            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}React:PostLogoutRedirectUris").Get<List<string>>();
             try
             {
                 await CreateApplicationAsync(
@@ -303,12 +306,12 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
 
 
         // Blazor Client
-        var blazorClientId = configurationSection["Hano_Blazor:ClientId"];
+        var blazorClientId = configurationSection[$"{sectionName}Blazor:ClientId"];
         if (!blazorClientId.IsNullOrWhiteSpace())
         {
-            var blazorRootUrl = configurationSection["Hano_Blazor:RootUrl"]?.TrimEnd('/');
-            var redirectUris = configurationSection.GetSection($"{sectionName}_Blazor:RedirectUris").Get<List<string>>();
-            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}_Blazor:PostLogoutRedirectUris").Get<List<string>>();
+            var blazorRootUrl = configurationSection[$"{sectionName}Blazor:RootUrl"]?.TrimEnd('/');
+            var redirectUris = configurationSection.GetSection($"{sectionName}Blazor:RedirectUris").Get<List<string>>();
+            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}Blazor:PostLogoutRedirectUris").Get<List<string>>();
             await CreateApplicationAsync(
                 name: blazorClientId!,
                 type: OpenIddictConstants.ClientTypes.Public,
@@ -326,12 +329,12 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         }
 
         //Console Test / Angular Client
-        var consoleAndAngularClientId = configurationSection["Hano_App:ClientId"];
+        var consoleAndAngularClientId = configurationSection[$"{sectionName}App:ClientId"];
         if (!consoleAndAngularClientId.IsNullOrWhiteSpace())
         {
-            var consoleAndAngularClientRootUrl = configurationSection["Hano_App:RootUrl"]?.TrimEnd('/');
-            var redirectUris = configurationSection.GetSection($"{sectionName}_App:RedirectUris").Get<List<string>>();
-            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}_App:PostLogoutRedirectUris").Get<List<string>>();
+            var consoleAndAngularClientRootUrl = configurationSection[$"{sectionName}App:RootUrl"]?.TrimEnd('/');
+            var redirectUris = configurationSection.GetSection($"{sectionName}App:RedirectUris").Get<List<string>>();
+            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}App:PostLogoutRedirectUris").Get<List<string>>();
             await CreateApplicationAsync(
                 name: consoleAndAngularClientId!,
                 type: OpenIddictConstants.ClientTypes.Public,
@@ -354,12 +357,12 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         }
 
         // Swagger Client
-        var swaggerClientId = configurationSection["Hano_Swagger:ClientId"];
+        var swaggerClientId = configurationSection[$"{sectionName}Swagger:ClientId"];
         if (!swaggerClientId.IsNullOrWhiteSpace())
         {
-            var swaggerRootUrl = configurationSection["Hano_Swagger:RootUrl"]?.TrimEnd('/');
-            var redirectUris = configurationSection.GetSection($"{sectionName}_Swagger:RedirectUris").Get<List<string>>();
-            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}_Swagger:PostLogoutRedirectUris").Get<List<string>>();
+            var swaggerRootUrl = configurationSection[$"{sectionName}Swagger:RootUrl"]?.TrimEnd('/');
+            var redirectUris = configurationSection.GetSection($"{sectionName}Swagger:RedirectUris").Get<List<string>>();
+            var postLogoutRedirectUris = configurationSection.GetSection($"{sectionName}Swagger:PostLogoutRedirectUris").Get<List<string>>();
             await CreateApplicationAsync(
                 name: swaggerClientId!,
                 type: OpenIddictConstants.ClientTypes.Public,

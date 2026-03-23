@@ -833,12 +833,19 @@ public class ImportAppService(
         ImportDomainRecordsResult result)
     {
         var plannedCodes = specs.Select(s => s.CustomerCode).ToList();
-        var existingCodes = plannedCodes.Count == 0
-            ? new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-            : (await distributorRepository.GetListAsync(
-                d => d.OdsDistributorId != null && plannedCodes.Contains(d.OdsDistributorId)))
-              .Select(d => d.OdsDistributorId!)
-              .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        // Disable IMultiTenant filter: distributors have TenantId set (non-null),
+        // so the default host-level filter (WHERE tenant_id IS NULL) would hide them all.
+        HashSet<string> existingCodes;
+        using (DataFilter.Disable<IMultiTenant>())
+        {
+            existingCodes = plannedCodes.Count == 0
+                ? new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                : (await distributorRepository.GetListAsync(
+                    d => d.OdsDistributorId != null && plannedCodes.Contains(d.OdsDistributorId)))
+                  .Select(d => d.OdsDistributorId!)
+                  .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        }
 
         foreach (var s in specs)
         {
@@ -857,17 +864,20 @@ public class ImportAppService(
                 }
 
                 ouByRegion.TryGetValue(s.Region, out var ou);
-                await distributorRepository.InsertAsync(new Distributor
+                using (DataFilter.Disable<IMultiTenant>())
                 {
-                    Id = GuidGenerator.Create(),
-                    TenantId = tenantId,
-                    OrganizationUnitId = ou?.Id,
-                    Name = s.Name,
-                    Address = s.Address,
-                    Region = s.Region,
-                    OdsDistributorId = s.CustomerCode,
-                    IsActive = true,
-                }, autoSave: false);
+                    await distributorRepository.InsertAsync(new Distributor
+                    {
+                        Id = GuidGenerator.Create(),
+                        TenantId = tenantId,
+                        OrganizationUnitId = ou?.Id,
+                        Name = s.Name,
+                        Address = s.Address,
+                        Region = s.Region,
+                        OdsDistributorId = s.CustomerCode,
+                        IsActive = true,
+                    }, autoSave: false);
+                }
 
                 existingCodes.Add(s.CustomerCode);
                 result.DistributorsCreated++;
